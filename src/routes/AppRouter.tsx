@@ -7,6 +7,11 @@ import Servicios from '../pages/Servicios';
 import Carrito from '../pages/Carrito';
 import Reserva from '../pages/Reservas';
 import ServicioDetalle from '../pages/ServicioDetalles';
+import InicioSesion from '../pages/InicioSesion';
+import Registro from '../pages/Registro';
+import Admin from '../pages/Admin';
+import Perfil from '../pages/Perfil'
+
 
 
 export default function AppRouter() {
@@ -22,6 +27,12 @@ export default function AppRouter() {
           <Route path="/carrito" element={<Carrito />} />
           <Route path="/producto/:id" element={<ProductoDetalle />} />
           <Route path="/reserva" element= {<Reserva />}/>
+          <Route path= "/inicio" element={<InicioSesion/>}/>
+          <Route path="/registro" element= {<Registro/>}/>
+          <Route path="/admin" element ={<Admin/>}/>
+          <Route path="/perfil" element={<Perfil />} />
+
+
         </Routes>
       </div>
     </BrowserRouter>

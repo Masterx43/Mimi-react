@@ -1,10 +1,37 @@
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useCart } from "../hooks/useCart.ts";
-import logo from "../assets/img/logotopbarmimi.png"
+import logo from "../assets/img/logotopbarmimi.png";
+import { useEffect, useState } from "react";
+
+interface User {
+  name?: string;
+  email?: string;
+}
 
 export default function Navbar() {
   const navigate = useNavigate();
   const { count } = useCart();
+  const [user, setUser] = useState<User | null>(null);
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  // Cargar sesión activa al iniciar la app
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    const admin = localStorage.getItem("isAdmin");
+
+    if (admin === "true") {
+      setIsAdmin(true);
+      setUser({ name: "Administrador" });
+    } else if (storedUser) {
+      setUser(JSON.parse(storedUser));
+      setIsAdmin(false);
+    } else {
+      setUser(null);
+      setIsAdmin(false);
+    }
+  }, []); // se ejecuta solo una vez al montar el Navbar
+
+  
 
   return (
     <nav className="navbar navbar-expand-lg shadow-sm px-4 py-2 mb-3 navbar-morado">
@@ -19,7 +46,7 @@ export default function Navbar() {
           <NavLink
             to="/tienda"
             className={({ isActive }) =>
-              `nav-link ${isActive ? "fw-bold text-primary" : ""}`
+              `nav-link fs-5 ${isActive ? "fw-bold text-primary" : ""}`
             }
           >
             Tienda
@@ -28,7 +55,7 @@ export default function Navbar() {
           <NavLink
             to="/servicios"
             className={({ isActive }) =>
-              `nav-link ${isActive ? "fw-bold text-primary" : ""}`
+              `nav-link fs-5 ${isActive ? "fw-bold text-primary" : ""}`
             }
           >
             Servicios
@@ -37,23 +64,42 @@ export default function Navbar() {
           <NavLink
             to="/reserva"
             className={({ isActive }) =>
-              `nav-link ${isActive ? "fw-bold text-primary" : ""}`
+              `nav-link fs-5 ${isActive ? "fw-bold text-primary" : ""}`
             }
           >
             Reserva
           </NavLink>
 
+          {/* ÍCONO DE USUARIO */}
+          <button
+            className="btn position-relative"
+            onClick={() => navigate("/admin")} // lleva al perfil o panel de usuario
+            title={user ? "Ver cuenta" : "Iniciar sesión"}
+          >
+            <i
+              className={`bi ${isAdmin
+                  ? "bi-shield-lock-fill text-warning" // admin
+                  : user
+                    ? "bi-person-circle text-success" // usuario
+                    : "bi-person text-dark" // sin sesión
+                }`}
+              style={{ fontSize: "1.5rem" }}
+            ></i>
+          </button>
 
-          {/* BOTÓN CARRITO */}
+
+          {/* CARRITO */}
           <button
             className="btn position-relative"
             onClick={() => navigate("/carrito")}
+            title="Ver carrito"
           >
             <i className="bi bi-cart-fill"></i>
-            {count > 0 && ( //oculta el número si está vacío
-              <span 
-              key={count}
-              className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+            {count > 0 && (
+              <span
+                key={count}
+                className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+              >
                 {count}
               </span>
             )}
