@@ -6,28 +6,47 @@ export default function Navbar() {
   const { count } = useCart();
 
   return (
-    <div className="container cajita-fondo">
-      <div className="row mt-1">
-        <nav className="navbar navbar-expand-lg navbar-light bg-light w-100 px-3">
-          <Link className="navbar-brand" to="/">
-            <img src="/assets/img/mimi.logo.webp" alt="logoMimi" height={80} />
-          </Link>
-          <div className="ms-auto d-flex align-items-center gap-3">
-            <NavLink className="nav-link" to="/tienda">
-              Tienda
-            </NavLink>
-            <button
-              className="btn position-relative"
-              onClick={() => navigate("/tienda")}
-            >
-              <i className="fa-solid fa-cart-shopping" />
+    <nav className="navbar navbar-expand-lg shadow-sm px-4 py-2 mb-3 navbar-morado">
+      <div className="container-fluid">
+        {/* LOGO */}
+        <Link className="navbar-brand" to="/">
+          <img src="/assets/img/mimi.logo.webp" alt="logoMimi" height={80} />
+        </Link>
+
+        {/* ENLACES DEL NAVBAR */}
+        <div className="ms-auto d-flex align-items-center gap-3">
+          <NavLink
+            to="/tienda"
+            className={({ isActive }) =>
+              `nav-link ${isActive ? "fw-bold text-primary" : ""}`
+            }
+          >
+            Tienda
+          </NavLink>
+
+          <NavLink
+            to="/servicios"
+            className={({ isActive }) =>
+              `nav-link ${isActive ? "fw-bold text-primary" : ""}`
+            }
+          >
+            Servicios
+          </NavLink>
+
+          {/* BOTÓN CARRITO */}
+          <button
+            className="btn position-relative"
+            onClick={() => navigate("/carrito")} // 👈 CAMBIO AQUÍ
+          >
+            <i className="bi bi-cart-fill"></i>
+            {count > 0 && ( // 👈 oculta el número si está vacío
               <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                 {count}
               </span>
-            </button>
-          </div>
-        </nav>
+            )}
+          </button>
+        </div>
       </div>
-    </div>
+    </nav>
   );
 }

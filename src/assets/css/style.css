@@ -1,67 +1,205 @@
-/* Global */
+/*--- Global --- */
 body {
-background-color: #70527c;
+  background-color: #ffffff; /* fondo general lila oscuro */
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  color: #2d2030; /* texto oscuro legible */
 }
-
 
 p {
-white-space: normal;
-word-wrap: break-word;
-overflow-wrap: break-word;
+  white-space: normal;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  line-height: 1.6;
+  font-size: 1.1rem;
 }
 
-
-/* --- Contenedor lila --- */
+/*--- Contenedor principal (fondo lila claro) --- */
 .cajita-fondo {
-background-color: #ccaed0;
-width: 100%;
-min-height: 100vh;
-padding: 1.5rem;
-border-radius: 12px;
-box-shadow: 0 4px 24px rgba(0,0,0,.12);
+  background-color: #ccaed0;
+  width: 100%;
+  min-height: 100vh;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.12);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
 }
 
-
+/* --- Sección blanca (bloques internos) --- */
 .cajita-fondo2 {
-background-color: white;
-width: 100%;
-min-height: 15vh;
-padding: 1.5rem;
-border-radius: 12px;
-box-shadow: 0 4px 24px rgba(0,0,0,.12);
-margin-bottom: 2rem;
+  background-color: #ffffff;
+  width: 100%;
+  max-width: 900px;
+  min-height: 25vh;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.12);
+  margin-bottom: 2rem;
 }
-
 
 .cajita-fondo3 {
-background-color: white;
-width: 100%;
-min-height: 3vh;
-padding: 1.5rem;
-border-radius: 12px;
-box-shadow: 0 4px 24px rgba(0,0,0,.12);
-margin-bottom: 1rem;
+  background-color: #ffffff;
+  width: 100%;
+  max-width: 800px;
+  min-height: 10vh;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.12);
+  margin-bottom: 1rem;
 }
 
-
-/* --- Navbar centrada --- */
+/* --- Navbar --- */
 .navbar {
-justify-content: center;
-position: relative;
+  background-color: #ccaed0 !important; /* morado principal */
+  border-radius: 0 0 12px 12px;
+  padding: 1rem 2rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.navbar .nav-link {
+  color: #ffffff !important; /* texto blanco */
+  font-weight: 500;
+  transition: all 0.2s ease-in-out;
+}
+
+.navbar .nav-link:hover {
+  color: #f5b5e0 !important; /* rosa suave al pasar */
+}
+
+.navbar-brand img {
+  filter: brightness(1.2); /* mejora la visibilidad del logo */
 }
 
 
-/* --- Tabs --- */
-.nav-link:hover {
-color: #d63384;
-}
 .nav-link.active:hover {
-color: #b02a6b;
+  color: #b02a6b !important;
 }
 
+/* --- Botón carrito --- */
+.btn.position-relative {
+  background: none;
+  border: none;
+  color: #2d2030;
+  font-size: 1.2rem;
+}
 
+.btn.position-relative:hover {
+  color: #d63384;
+  transform: scale(1.1);
+  transition: 0.2s ease;
+}
+
+/* --- Botones rosados --- */
 .botonRosado {
-background-color: #d63384;
-color: white;
-border-color: #d63384;
+  background-color: #d63384;
+  color: white;
+  border-color: #d63384;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  border-radius: 8px;
+  padding: 0.6rem 1.2rem;
 }
+
+.botonRosado:hover {
+  background-color: #b02a6b;
+  color: white;
+  transform: scale(1.05);
+}
+
+/* --- Sección "Sobre nosotros" --- */
+.sobre-nosotros {
+  border: 3px solid #d63384;
+  color: #2d2030;
+  border-radius: 10px;
+  padding: 1.5rem;
+  background-color: #ffffff;
+  text-align: center;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.sobre-nosotros h1 {
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: #3b2e3c;
+}
+
+/* 🌸 --- Footer --- */
+footer {
+  margin-top: 3rem;
+  color: #2d2030;
+  font-weight: 500;
+}
+
+footer i {
+  color: #d63384;
+  font-size: 1.4rem;
+  transition: transform 0.2s ease;
+}
+
+footer i:hover {
+  transform: scale(1.2);
+}
+/*--- Páginas principales --- */
+.page-container {
+  padding-top: 1rem; /* un poco de espacio debajo del navbar */
+}
+
+
+/*--- Responsividad (para celulares/tablets) --- */
+@media (max-width: 768px) {
+  .cajita-fondo {
+    padding: 1rem;
+  }
+
+  .cajita-fondo2,
+  .cajita-fondo3 {
+    padding: 1rem;
+    max-width: 100%;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  p {
+    font-size: 1rem;
+  }
+
+  .navbar {
+    flex-direction: column;
+    text-align: center;
+    gap: 1rem;
+  }
+
+  .navbar-brand img {
+    height: 60px;
+  }
+}
+
+.servicios-fondo {
+  background-color: #f5dff5; /* rosado pastel */
+  width: 100%;
+  min-height: 100vh;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.12);
+}
+
+/* --- Ícono del carrito --- */
+.bi-cart-fill,
+.fa-cart-shopping {
+  color: #ffffff; /* blanco */
+  font-size: 1.4rem;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.bi-cart-fill:hover,
+.fa-cart-shopping:hover {
+  transform: scale(1.2);
+  color: #f5b5e0; /* rosado claro al pasar el mouse */
+}
+
+
