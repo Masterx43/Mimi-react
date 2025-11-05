@@ -6,7 +6,7 @@ export function useLocalStorage<T>(key: string, initial: T) {
     return raw ? (JSON.parse(raw) as T) : initial;
   });
 
-  // ✅ Guarda cambios sin generar loops infinitos
+  //Guarda cambios sin generar loops infinitos
   useEffect(() => {
     try {
       const current = localStorage.getItem(key);
@@ -22,7 +22,7 @@ export function useLocalStorage<T>(key: string, initial: T) {
     }
   }, [key, value]);
 
-  // ✅ Escucha actualizaciones desde otros componentes
+  //Escucha actualizaciones desde otros componentes
   useEffect(() => {
     const onStorageChange = (e: Event) => {
       const custom = e as CustomEvent<{ key: string }>;

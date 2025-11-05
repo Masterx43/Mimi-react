@@ -1,4 +1,4 @@
-// ✅ Importamos todas las imágenes desde src/assets/img
+//Importamos todas las imágenes desde src/assets/img
 import MascarillaCapilar from '../assets/img/MascarillaCapilar.webp';
 import serumCapilar from '../assets/img/serumCapilar.webp';
 import TermoProtector from '../assets/img/TermoProtector.webp';
@@ -7,7 +7,7 @@ import cepilloDesenredante from '../assets/img/cepillo_desenredante_crespo.webp'
 import shampooKeratina from '../assets/img/shampoo_keratina.webp';
 import type { Product } from '../interfaces/Product';
 
-// ✅ Lista completa de productos con imports
+//Lista completa de productos con imports
 export const products: Product[] = [
   {
     id: 'SKU-001',
@@ -15,7 +15,7 @@ export const products: Product[] = [
     description:
       'Nutre tu cabello con extractos naturales y brillo duradero. Ideal para cabellos secos o dañados.',
     price: 12990,
-    image: MascarillaCapilar, // 👈 usamos la variable importada
+    image: MascarillaCapilar, //usamos la variable importada
     category: 'Tratamiento',
   },
   {

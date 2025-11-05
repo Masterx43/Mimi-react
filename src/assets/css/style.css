@@ -67,7 +67,7 @@ p {
 }
 
 .navbar .nav-link:hover {
-  color: #3b2e3c !important; /* rosa suave al pasar */
+  color: #3b2e3c !important; /* rosa suave al pasar por encima*/
   transform: scale(1.05);
 }
 
@@ -218,6 +218,39 @@ footer i:hover {
   outline: none;
   box-shadow: 0 0 8px rgba(214, 51, 132, 0.3);
   border-color: #b02a6b;
+}
+
+/* --- Estilo personalizado para el searchbar --- */
+.input-group .form-control {
+  border: 2px solid #d63384; /* borde rosado */
+  border-right: none;
+  border-radius: 8px 0 0 8px;
+  padding: 0.6rem 1rem;
+}
+
+.input-group .btn {
+  border: 2px solid #d63384;
+  border-left: none;
+  background-color: #d63384;
+  color: #fff;
+  border-radius: 0 8px 8px 0;
+  transition: background-color 0.2s ease;
+}
+
+.input-group .btn:hover {
+  background-color: #b02a6b; /* más oscuro al pasar */
+}
+
+
+.card {
+  border: none;
+  border-radius: 12px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
 }
 
 

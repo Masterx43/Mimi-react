@@ -47,10 +47,10 @@ export default function Navbar() {
           {/* BOTÓN CARRITO */}
           <button
             className="btn position-relative"
-            onClick={() => navigate("/carrito")} // 👈 CAMBIO AQUÍ
+            onClick={() => navigate("/carrito")}
           >
             <i className="bi bi-cart-fill"></i>
-            {count > 0 && ( // 👈 oculta el número si está vacío
+            {count > 0 && ( //oculta el número si está vacío
               <span 
               key={count}
               className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">

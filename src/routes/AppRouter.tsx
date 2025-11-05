@@ -6,6 +6,7 @@ import ProductoDetalle from '../pages/ProductoDetalle';
 import Servicios from '../pages/Servicios';
 import Carrito from '../pages/Carrito';
 import Reserva from '../pages/Reservas';
+import ServicioDetalle from '../pages/ServicioDetalles';
 
 
 export default function AppRouter() {
@@ -17,6 +18,7 @@ export default function AppRouter() {
           <Route path="/" element={<Home />} />
           <Route path="/tienda" element={<Tienda />} />
           <Route path="/servicios" element={<Servicios />} /> 
+          <Route path="Servicio/:id" element={<ServicioDetalle/>}/>
           <Route path="/carrito" element={<Carrito />} />
           <Route path="/producto/:id" element={<ProductoDetalle />} />
           <Route path="/reserva" element= {<Reserva />}/>

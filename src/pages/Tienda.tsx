@@ -1,44 +1,49 @@
-import { useEffect, useState, useMemo} from "react";
+import { useEffect, useState, useMemo } from "react";
 import ProductCard from "../components/ProductCard";
 import { products as initialProducts } from "../data/products";
 import type { Product } from "../interfaces/Product";
 
 export default function Tienda() {
-  const [query, setQuery] = useState("")
+  const [query, setQuery] = useState("");
   const [products, setProducts] = useState<Product[]>([]);
 
   useEffect(() => {
-    // Simula fetch local: podrías cambiarlo por un fetch('/products.json') si lo pones en /public
+    // Simula fetch local (puedes cambiarlo por un fetch real)
     setProducts(initialProducts);
   }, []);
 
   // Filtrado de productos según búsqueda
   const filteredProducts = useMemo(() => {
-  if (!query.trim()) return products;
-  return products.filter((p) =>
-    p.name.toLowerCase().includes(query.toLowerCase())
-  );
-}, [query, products]);
-
-
-
+    if (!query.trim()) return products;
+    return products.filter((p) =>
+      p.name.toLowerCase().includes(query.toLowerCase())
+    );
+  }, [query, products]);
 
   return (
     <div className="container cajita-fondo">
       <section className="mt-4">
         <div className="container cajita-fondo3">
-          <h2 className="text-center mb-3"> Tienda</h2>
+          <h2 className="text-center mb-3">Tienda</h2>
 
-          {/*Barra de búsqueda */}
+          {/* Barra de búsqueda con ícono */}
           <div className="text-center mb-4">
-            <input
-              type="text"
-              placeholder="Buscar producto..."
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              className="form-control mx-auto"
-              style={{ maxWidth: "400px" }}
-            />
+            <div className="input-group mx-auto" style={{ maxWidth: "400px" }}>
+              <input
+                type="text"
+                className="form-control"
+                placeholder="Buscar producto..."
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+              />
+              <button
+                className="btn btn-outline-secondary"
+                type="button"
+                onClick={() => setQuery(query.trim())} // por si quieres activar manualmente
+              >
+                <i className="bi bi-search"></i>
+              </button>
+            </div>
           </div>
         </div>
 
