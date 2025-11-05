@@ -37,7 +37,7 @@ export default function ServicioDetalle() {
             ${servicio.precio.toLocaleString("es-CL")}
           </h4>
           <div className="d-flex gap-3">
-            <button className="btn botonRosado">Reservar ahora</button>
+            <button className="btn botonRosado" onClick={() => navigate('/reserva')}>Reservar ahora</button>
             <button className="btn btn-outline-secondary" onClick={() => navigate(-1)}>
               Volver
             </button>

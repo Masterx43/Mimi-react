@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { services } from "../data/service";
 
 export default function Reserva() {
   const [nombre, setNombre] = useState("");
@@ -84,7 +85,11 @@ export default function Reserva() {
       <div className="container cajita-fondo2">
         <h2 className="text-center mb-4">Reserva tu hora</h2>
 
-        <form onSubmit={handleSubmit} className="mx-auto" style={{ maxWidth: "400px" }}>
+        <form
+          onSubmit={handleSubmit}
+          className="mx-auto"
+          style={{ maxWidth: "400px" }}
+        >
           {/* Nombre */}
           <div className="mb-3">
             <label className="form-label">Nombre completo</label>
@@ -116,7 +121,9 @@ export default function Reserva() {
               type="tel"
               className="form-control"
               value={telefono}
-              onChange={(e) => setTelefono(e.target.value.replace(/[^0-9]/g, ""))} // solo números
+              onChange={(e) =>
+                setTelefono(e.target.value.replace(/[^0-9]/g, ""))
+              } // solo números
               placeholder="Ej: 912345678"
             />
           </div>
@@ -130,10 +137,11 @@ export default function Reserva() {
               onChange={(e) => setServicio(e.target.value)}
             >
               <option value="">Selecciona un servicio</option>
-              <option value="Corte de cabello">Corte de cabello </option>
-              <option value="Hidratación profunda">Hidratación profunda </option>
-              <option value="Peinado profesional">Peinado profesional </option>
-              <option value="Coloración">Coloración </option>
+              {services.map((s) => (                           //Aqui creamos una opcion para cada scroll dependiendo de cuantos servicios haya en nuestra data
+                <option key={s.id} value={s.nombre}>
+                  {s.nombre} — ${s.precio.toLocaleString("es-CL")}
+                </option>
+              ))}
             </select>
           </div>
 
@@ -169,7 +177,11 @@ export default function Reserva() {
 
           {/* Botón */}
           <div className="text-center">
-            <button type="submit" className="btn botonRosado" disabled={!horasDisponibles.length}>
+            <button
+              type="submit"
+              className="btn botonRosado"
+              disabled={!horasDisponibles.length}
+            >
               Reservar hora
             </button>
           </div>
@@ -179,7 +191,9 @@ export default function Reserva() {
         {mensaje && (
           <div
             className={`alert mt-4 ${
-              mensaje.includes("registrada su hora") ? "alert-success" : "alert-info"
+              mensaje.includes("registrada su hora")
+                ? "alert-success"
+                : "alert-info"
             } text-center`}
           >
             {mensaje}
