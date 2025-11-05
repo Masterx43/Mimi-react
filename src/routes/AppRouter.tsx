@@ -31,8 +31,7 @@ export default function AppRouter() {
           <Route path="/registro" element= {<Registro/>}/>
           <Route path="/admin" element ={<Admin/>}/>
           <Route path="/perfil" element={<Perfil />} />
-
-
+          <Route path='*' element= {<div>Pagina no disponible</div>}/>
         </Routes>
       </div>
     </BrowserRouter>

@@ -1,4 +1,4 @@
-import { Link, NavLink, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate , useLocation } from "react-router-dom";
 import { useCart } from "../hooks/useCart.ts";
 import logo from "../assets/img/logotopbarmimi.png";
 import { useEffect, useState } from "react";
@@ -10,6 +10,7 @@ interface User {
 
 export default function Navbar() {
   const navigate = useNavigate();
+  const location = useLocation();
   const { count } = useCart();
   const [user, setUser] = useState<User | null>(null);
   const [isAdmin, setIsAdmin] = useState(false);
@@ -29,9 +30,17 @@ export default function Navbar() {
       setUser(null);
       setIsAdmin(false);
     }
-  }, []); // se ejecuta solo una vez al montar el Navbar
+  }, [location.pathname]); // se ejecuta solo una vez al montar el Navbar
 
-  
+  const handlerRedirection = () => {
+    if (isAdmin) {
+      navigate("/admin"); // panel administrador
+    } else if (user) {
+      navigate("/perfil"); // perfil de usuario
+    } else {
+      navigate("/inicio"); // sin sesión → login o registro
+    }
+  };
 
   return (
     <nav className="navbar navbar-expand-lg shadow-sm px-4 py-2 mb-3 navbar-morado">
@@ -73,7 +82,7 @@ export default function Navbar() {
           {/* ÍCONO DE USUARIO */}
           <button
             className="btn position-relative"
-            onClick={() => navigate("/admin")} // lleva al perfil o panel de usuario
+            onClick={handlerRedirection} // lleva al perfil o panel de usuario
             title={user ? "Ver cuenta" : "Iniciar sesión"}
           >
             <i

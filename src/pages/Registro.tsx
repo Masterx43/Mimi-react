@@ -38,9 +38,6 @@ export default function Registro() {
     const newUser: User = { name, email, password };
     localStorage.setItem("users", JSON.stringify([...existingUsers, newUser]));
 
-    // Guardar sesión activa automáticamente
-    localStorage.setItem("user", JSON.stringify(newUser));
-    localStorage.removeItem("isAdmin"); // por si venía del admin
 
     setSuccess("Registro exitoso");
     setError("");

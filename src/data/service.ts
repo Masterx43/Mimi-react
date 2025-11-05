@@ -2,16 +2,7 @@
 import coloracion from '../assets/img/coloracion.webp';
 import brushing from '../assets/img/brushing-y-styling.webp';
 import manicure from '../assets/img/servicios/manicure01.webp';
-
-// Interfaz de servicios
-export interface Service {
-  id: string;
-  nombre: string;
-  descCorta: string;
-  descLarga: string;
-  precio: number;
-  img: string;
-}
+import type { Service } from '../interfaces/Service';
 
 //Lista de servicios
 export const services: Service[] = [

@@ -59,9 +59,9 @@ export default function Perfil() {
       <p>
         Estado:{" "}
         {isAdmin ? (
-          <span className="text-warning fw-bold">Administrador 🛡️</span>
+          <span className="text-warning fw-bold">Administrador</span>
         ) : (
-          <span className="text-success fw-bold">Usuario Activo 💚</span>
+          <span className="text-success fw-bold">Usuario Activo</span>
         )}
       </p>
       <button className="btn btn-danger mt-3" onClick={handleLogout}>
