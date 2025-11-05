@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import type  { Product } from "../data/products";
+import type { Product } from "../interfaces/Product"
 import { CLP } from "../utils/currency";
 import { useCart } from "../hooks/useCart.ts";
 

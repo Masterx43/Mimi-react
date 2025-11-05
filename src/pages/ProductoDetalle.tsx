@@ -1,7 +1,7 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { products } from "../data/products"; //aqui importamos la lista completa de los productos
-import type { Product } from "../data/products"; //Aqui importamos la interface del producto
+import type { Product } from "../interfaces/Product"; //Aqui importamos la interface del producto
 import ProductDetail from "../components/ProductDetail";
 
 export default function ProductoDetalle() {

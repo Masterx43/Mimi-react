@@ -5,18 +5,7 @@ import TermoProtector from '../assets/img/TermoProtector.webp';
 import cremaPeinar from '../assets/img/crema_de_peinar_rizos.webp';
 import cepilloDesenredante from '../assets/img/cepillo_desenredante_crespo.webp';
 import shampooKeratina from '../assets/img/shampoo_keratina.webp';
-import aceiteCoco from '../assets/img/aceite_coco.webp';
-import peineMadera from '../assets/img/peine_madera.webp';
-
-// ✅ Definición de la interfaz Product
-export interface Product {
-  id: string;
-  name: string;
-  description: string;
-  price: number;
-  image: string;
-  category: string;
-}
+import type { Product } from '../interfaces/Product';
 
 // ✅ Lista completa de productos con imports
 export const products: Product[] = [
@@ -73,23 +62,5 @@ export const products: Product[] = [
     price: 9990,
     image: shampooKeratina,
     category: 'Cuidado Diario',
-  },
-  {
-    id: 'SKU-007',
-    name: 'Aceite Capilar de Coco',
-    description:
-      'Aporta brillo natural y suavidad, ideal para uso diario.',
-    price: 8990,
-    image: aceiteCoco,
-    category: 'Tratamiento',
-  },
-  {
-    id: 'SKU-008',
-    name: 'Peine de Madera Antiestático',
-    description:
-      'Previene el frizz y cuida el cuero cabelludo. 100% natural.',
-    price: 4990,
-    image: peineMadera,
-    category: 'Accesorios',
-  },
+  }
 ];

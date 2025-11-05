@@ -1,5 +1,6 @@
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useCart } from "../hooks/useCart.ts";
+import logo from "../assets/img/mimi.logo.webp"
 
 export default function Navbar() {
   const navigate = useNavigate();
@@ -10,7 +11,7 @@ export default function Navbar() {
       <div className="container-fluid">
         {/* LOGO */}
         <Link className="navbar-brand" to="/">
-          <img src="/assets/img/mimi.logo.webp" alt="logoMimi" height={80} />
+          <img src={logo} alt="logoMimi" height={80} />
         </Link>
 
         {/* ENLACES DEL NAVBAR */}
