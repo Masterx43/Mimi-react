@@ -1,6 +1,6 @@
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useCart } from "../hooks/useCart.ts";
-import logo from "../assets/img/mimi.logo.webp"
+import logo from "../assets/img/logotopbarmimi.png"
 
 export default function Navbar() {
   const navigate = useNavigate();
@@ -34,6 +34,16 @@ export default function Navbar() {
             Servicios
           </NavLink>
 
+          <NavLink
+            to="/reserva"
+            className={({ isActive }) =>
+              `nav-link ${isActive ? "fw-bold text-primary" : ""}`
+            }
+          >
+            Reserva
+          </NavLink>
+
+
           {/* BOTÓN CARRITO */}
           <button
             className="btn position-relative"
@@ -41,7 +51,9 @@ export default function Navbar() {
           >
             <i className="bi bi-cart-fill"></i>
             {count > 0 && ( // 👈 oculta el número si está vacío
-              <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+              <span 
+              key={count}
+              className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                 {count}
               </span>
             )}

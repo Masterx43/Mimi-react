@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo} from "react";
 import ProductCard from "../components/ProductCard";
 import { products as initialProducts } from "../data/products";
-import type { Product } from "../data/products";
+import type { Product } from "../interfaces/Product";
 
 export default function Tienda() {
+  const [query, setQuery] = useState("")
   const [products, setProducts] = useState<Product[]>([]);
 
   useEffect(() => {
@@ -11,16 +12,47 @@ export default function Tienda() {
     setProducts(initialProducts);
   }, []);
 
+  // Filtrado de productos según búsqueda
+  const filteredProducts = useMemo(() => {
+  if (!query.trim()) return products;
+  return products.filter((p) =>
+    p.name.toLowerCase().includes(query.toLowerCase())
+  );
+}, [query, products]);
+
+
+
+
   return (
     <div className="container cajita-fondo">
       <section className="mt-4">
         <div className="container cajita-fondo3">
-          <h2 className="text-center mb-3">Tienda</h2>
+          <h2 className="text-center mb-3"> Tienda</h2>
+
+          {/*Barra de búsqueda */}
+          <div className="text-center mb-4">
+            <input
+              type="text"
+              placeholder="Buscar producto..."
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              className="form-control mx-auto"
+              style={{ maxWidth: "400px" }}
+            />
+          </div>
         </div>
+
+        {/*Lista de productos */}
         <div className="row g-4">
-          {products.map((p) => (
-            <ProductCard key={p.id} product={p} />
-          ))}
+          {filteredProducts.length > 0 ? (
+            filteredProducts.map((p) => (
+              <ProductCard key={p.id} product={p} />
+            ))
+          ) : (
+            <p className="text-center mt-4">
+              No se encontraron productos con ese nombre
+            </p>
+          )}
         </div>
       </section>
     </div>

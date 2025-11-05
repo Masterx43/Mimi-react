@@ -61,12 +61,14 @@ p {
 
 .navbar .nav-link {
   color: #ffffff !important; /* texto blanco */
-  font-weight: 500;
+  font-weight: 600;
+  font-size: 1.15rem;
   transition: all 0.2s ease-in-out;
 }
 
 .navbar .nav-link:hover {
-  color: #f5b5e0 !important; /* rosa suave al pasar */
+  color: #3b2e3c !important; /* rosa suave al pasar */
+  transform: scale(1.05);
 }
 
 .navbar-brand img {
@@ -126,7 +128,7 @@ p {
   color: #3b2e3c;
 }
 
-/* 🌸 --- Footer --- */
+/*--- Footer --- */
 footer {
   margin-top: 3rem;
   color: #2d2030;
@@ -199,7 +201,25 @@ footer i:hover {
 .bi-cart-fill:hover,
 .fa-cart-shopping:hover {
   transform: scale(1.2);
-  color: #f5b5e0; /* rosado claro al pasar el mouse */
+  color: #3b2e3c; /* rosado claro al pasar el mouse */
 }
+
+
+/* --- SearchBar --- */
+.form-control {
+  border: 2px solid #d63384;
+  border-radius: 10px;
+  padding: 0.6rem 1rem;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+}
+
+.form-control:focus {
+  outline: none;
+  box-shadow: 0 0 8px rgba(214, 51, 132, 0.3);
+  border-color: #b02a6b;
+}
+
+
 
 

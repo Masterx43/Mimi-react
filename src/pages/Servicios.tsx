@@ -1,6 +1,6 @@
 export default function Servicios() {
   return (
-    <div className="servisios-fondo">
+    <div className="servicios-fondo">
       <div className="container cajita-fondo2">
         <h1 className="text-center mb-4">Nuestros Servicios</h1>
         <p className="text-center">
