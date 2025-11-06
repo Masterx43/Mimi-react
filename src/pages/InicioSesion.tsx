@@ -21,14 +21,14 @@ export default function InicioSesion() {
     const adminEmail = "admin@mimi.cl";
     const adminPassword = "123456";
 
-    // 👑 Verificar si es administrador
+    // Verificar si es administrador
     if (email === adminEmail && password === adminPassword) {
       localStorage.setItem("isAdmin", "true");
       navigate("/admin");
       return;
     }
 
-    // 👤 Verificar usuario registrado
+    // Verificar usuario registrado
     const user = users.find(
       (u) => u.email === email && u.password === password
     );
