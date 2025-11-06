@@ -1,10 +1,12 @@
 /*--- Global --- */
+
 body {
-  background-color: #ffffff; /* fondo general lila oscuro */
   margin: 0;
-  font-family: 'Poppins', sans-serif;
-  color: #2d2030; /* texto oscuro legible */
+  padding: 0;
+  height: 100%;
+  background-color: transparent;
 }
+
 
 p {
   white-space: normal;
@@ -113,7 +115,6 @@ p {
 
 /* --- Sección "Sobre nosotros" --- */
 .sobre-nosotros {
-  border: 3px solid #d63384;
   color: #2d2030;
   border-radius: 10px;
   padding: 1.5rem;
@@ -145,9 +146,24 @@ footer i:hover {
   transform: scale(1.2);
 }
 /*--- Páginas principales --- */
-.page-container {
-  padding-top: 1rem; /* un poco de espacio debajo del navbar */
+
+
+
+.home-fondo {
+  background-image: url("../img/fondoMarmol.avif");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  padding-top: 0; /* Asegúrate de no dejar hueco arriba */
+  margin: 0;
 }
+
+
 
 
 /*--- Responsividad (para celulares/tablets) --- */

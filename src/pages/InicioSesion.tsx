@@ -42,7 +42,8 @@ export default function Login() {
   };
 
   return (
-    <div className="cajita-fondo d-flex justify-content-center align-items-center">
+
+    <div className="container cajita-fondo">
       <div className="cajita-fondo2" style={{ maxWidth: "450px" }}>
         <h2 className="text-center mb-4">Iniciar sesión</h2>
 

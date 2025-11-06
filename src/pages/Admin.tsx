@@ -1,217 +1,276 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { products as initialProducts } from "../data/products";
-import { services as initialServices } from "../data/service";
+import { services } from "../data/service";
+import { products } from "../data/products";
 
 interface User {
   name: string;
   email: string;
 }
 
-interface Item {
+interface EditableItem {
   id: string;
-  name: string;
+  nombre?: string; // servicios
+  name?: string;   // productos
 }
 
-export default function Admin() {
-  const navigate = useNavigate();
-  const [users, setUsers] = useState<User[]>([]);
-  const [products, setProducts] = useState<Item[]>([]);
-  const [services, setServices] = useState<Item[]>([]);
-  const [isAdmin, setIsAdmin] = useState(false);
 
-  // Modal de edición
-  const [showModal, setShowModal] = useState(false);
-  const [editType, setEditType] = useState<"producto" | "servicio" | null>(null);
-  const [editName, setEditName] = useState("");
-  const [editId, setEditId] = useState<string>("");
+export default function AdminPanel() {
+  const [users, setUsers] = useState<User[]>([]);
+  const [serviceList, setServiceList] = useState(services);
+  const [productList, setProductList] = useState(products);
+  const [editingItem, setEditingItem] = useState<EditableItem | null>(null);
+  const [itemToDelete, setItemToDelete] = useState<EditableItem | null>(null);
+  const [editedValue, setEditedValue] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const admin = localStorage.getItem("isAdmin") === "true";
-    setIsAdmin(admin);
-
-    if (!admin) {
-      navigate("/inicio");
-      return;
-    }
-
     const storedUsers = JSON.parse(localStorage.getItem("users") || "[]");
     setUsers(storedUsers);
-
-    setProducts(initialProducts.map((p) => ({ id: p.id, name: p.name })));
-    setServices(initialServices.map((s) => ({ id: s.id, name: s.nombre })));
-  }, [navigate]);
-
-  // Eliminar producto o servicio
-  const handleDelete = (type: "producto" | "servicio", id: string) => {
-    if (type === "producto") {
-      setProducts((prev) => prev.filter((p) => p.id !== id));
-    } else {
-      setServices((prev) => prev.filter((s) => s.id !== id));
-    }
-  };
-
-  // Abrir modal de edición
-  const openEditModal = (type: "producto" | "servicio", id: string, name: string) => {
-    setEditType(type);
-    setEditName(name);
-    setEditId(id);
-    setShowModal(true);
-  };
-
-  // Guardar cambios desde el modal
-  const handleSaveEdit = () => {
-    if (!editType) return;
-
-    if (editType === "producto") {
-      setProducts((prev) =>
-        prev.map((p) => (p.id === editId ? { ...p, name: editName } : p))
-      );
-    } else {
-      setServices((prev) =>
-        prev.map((s) => (s.id === editId ? { ...s, name: editName } : s))
-      );
-    }
-
-    setShowModal(false);
-  };
+  }, []);
 
   const handleLogout = () => {
     localStorage.removeItem("isAdmin");
-    navigate("/");
+    navigate("/inicio");
+  };
+
+  // Abrir modal de edición (este funciona para servicios o productos)
+  const handleEdit = (item: EditableItem) => {
+    setEditingItem(item);
+    setEditedValue(item.nombre || item.name || "");
+  };
+
+  // Guardar cambios (detecta si es servicio o producto)
+  const saveEdit = () => {
+    if (!editingItem) return;
+
+    if ("nombre" in editingItem) {
+      setServiceList((prev) =>
+        prev.map((s) =>
+          s.id === editingItem.id ? { ...s, nombre: editedValue } : s
+        )
+      );
+    } else if ("name" in editingItem) {
+      setProductList((prev) =>
+        prev.map((p) =>
+          p.id === editingItem.id ? { ...p, name: editedValue } : p
+        )
+      );
+    }
+
+    setEditingItem(null);
+  };
+
+  //Abrir modal de confirmación
+  const handleDelete = (item: EditableItem) => {
+    setItemToDelete(item);
+  };
+
+  //Confirmar eliminación
+  const confirmDelete = () => {
+    if (!itemToDelete) return;
+
+    if ("nombre" in itemToDelete) {
+      setServiceList((prev) =>
+        prev.filter((s) => s.id !== itemToDelete.id)
+      );
+    } else if ("name" in itemToDelete) {
+      setProductList((prev) =>
+        prev.filter((p) => p.id !== itemToDelete.id)
+      );
+    }
+
+    setItemToDelete(null);
   };
 
   return (
-    <div className="cajita-fondo">
-      <div className="container cajita-fondo2">
-        <h1 className="text-center mb-4">
+    <div className="home-fondo d-flex justify-content-center align-items-center py-5">
+      <div
+        className="cajita-fondo2 shadow-lg border-0 p-5"
+        style={{
+          maxWidth: "950px",
+          width: "100%",
+          borderRadius: "16px",
+          backgroundColor: "white",
+        }}
+      >
+        <h1 className="text-center mb-3 fw-bold">
           <i className="bi bi-shield-lock-fill text-warning me-2"></i>
           Panel de Administración
         </h1>
 
-        {!isAdmin ? (
-          <p className="text-center text-danger">
-            No tienes permisos para acceder a esta página.
-          </p>
-        ) : (
-          <>
-            <p className="text-center mb-4">
-              Bienvenido administrador 👑. Aquí puedes gestionar usuarios, servicios y productos.
-            </p>
+        <p className="text-center text-muted mb-4">
+          Bienvenido administrador. Gestiona usuarios, servicios y productos.
+        </p>
 
-            {/* Usuarios */}
-            <h3 className="mt-4 mb-3">Usuarios registrados</h3>
+        {/*Usuarios */}
+        <section className="mb-5">
+          <h4 className="fw-bold mb-3 text-start">
+            <i className="bi bi-people-fill me-2 text-secondary"></i>
+            Usuarios registrados
+          </h4>
+          <div className="list-group border rounded-3">
             {users.length > 0 ? (
-              <ul className="list-group mb-4">
-                {users.map((u, i) => (
-                  <li key={i} className="list-group-item d-flex justify-content-between">
-                    <span>
-                      {i + 1}. {u.name} — <small>{u.email}</small>
-                    </span>
-                  </li>
-                ))}
-              </ul>
+              users.map((u, index) => (
+                <div
+                  key={index}
+                  className="list-group-item d-flex align-items-center justify-content-between"
+                >
+                  <span>{index + 1}. — {u.email}</span>
+                </div>
+              ))
             ) : (
-              <p className="text-center">No hay usuarios registrados aún.</p>
+              <p className="text-muted text-center m-2">
+                No hay usuarios registrados.
+              </p>
             )}
+          </div>
+        </section>
 
-            {/* Servicios */}
-            <h3 className="mt-4 mb-3">Servicios</h3>
-            {services.length > 0 ? (
-              <ul className="list-group mb-4">
-                {services.map((s) => (
-                  <li
-                    key={s.id}
-                    className="list-group-item d-flex justify-content-between align-items-center"
+        {/*Servicios */}
+        <section className="mb-5">
+          <h4 className="fw-bold mb-3 text-start">
+            <i className="bi bi-scissors me-2 text-secondary"></i>
+            Servicios
+          </h4>
+          <div className="list-group border rounded-3">
+            {serviceList.map((service) => (
+              <div
+                key={service.id}
+                className="list-group-item d-flex justify-content-between align-items-center"
+              >
+                <span>{service.nombre}</span>
+                <div className="d-flex gap-2">
+                  <button
+                    className="btn btn-outline-primary btn-sm px-3"
+                    onClick={() => handleEdit(service)}
                   >
-                    <span>{s.name}</span>
-                    <div>
-                      <button
-                        className="btn btn-sm btn-outline-primary me-2"
-                        onClick={() => openEditModal("servicio", s.id, s.name)}
-                      >
-                        <i className="bi bi-pencil"></i> Editar
-                      </button>
-                      <button
-                        className="btn btn-sm btn-outline-danger"
-                        onClick={() => handleDelete("servicio", s.id)}
-                      >
-                        <i className="bi bi-trash"></i> Eliminar
-                      </button>
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p className="text-center">No hay servicios disponibles.</p>
-            )}
-
-            {/* Productos */}
-            <h3 className="mt-4 mb-3">Productos</h3>
-            {products.length > 0 ? (
-              <ul className="list-group mb-4">
-                {products.map((p) => (
-                  <li
-                    key={p.id}
-                    className="list-group-item d-flex justify-content-between align-items-center"
+                    Editar
+                  </button>
+                  <button
+                    className="btn btn-outline-danger btn-sm px-3"
+                    onClick={() => handleDelete(service)}
                   >
-                    <span>{p.name}</span>
-                    <div>
-                      <button
-                        className="btn btn-sm btn-outline-primary me-2"
-                        onClick={() => openEditModal("producto", p.id, p.name)}
-                      >
-                        <i className="bi bi-pencil"></i> Editar
-                      </button>
-                      <button
-                        className="btn btn-sm btn-outline-danger"
-                        onClick={() => handleDelete("producto", p.id)}
-                      >
-                        <i className="bi bi-trash"></i> Eliminar
-                      </button>
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p className="text-center">No hay productos disponibles.</p>
-            )}
+                    Eliminar
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
 
-            <div className="text-center mt-4">
-              <button className="btn btn-outline-secondary" onClick={handleLogout}>
-                Cerrar sesión
-              </button>
-            </div>
-          </>
-        )}
+        {/*Productos */}
+        <section>
+          <h4 className="fw-bold mb-3 text-start">
+            <i className="bi bi-bag-heart-fill me-2 text-secondary"></i>
+            Productos
+          </h4>
+          <div className="list-group border rounded-3">
+            {productList.map((product) => (
+              <div
+                key={product.id}
+                className="list-group-item d-flex justify-content-between align-items-center"
+              >
+                <span>{product.name}</span>
+                <div className="d-flex gap-2">
+                  <button
+                    className="btn btn-outline-primary btn-sm px-3"
+                    onClick={() => handleEdit(product)}
+                  >
+                    Editar
+                  </button>
+                  <button
+                    className="btn btn-outline-danger btn-sm px-3"
+                    onClick={() => handleDelete(product)}
+                  >
+                    Eliminar
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/*Botón cerrar sesión */}
+        <div className="text-center mt-5">
+          <button className="btn btn-danger px-4" onClick={handleLogout}>
+            Cerrar sesión
+          </button>
+        </div>
       </div>
 
-      {/* Modal de edición tipo card */}
-      {showModal && (
+      {/* Modal de edición */}
+      {editingItem && (
         <div
-          className="position-fixed top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center"
-          style={{ background: "rgba(0, 0, 0, 0.4)", zIndex: 999 }}
+          className="position-fixed top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center"
+          style={{
+            backgroundColor: "rgba(0,0,0,0.5)",
+            zIndex: 1050,
+          }}
         >
-          <div className="card shadow-lg p-4" style={{ maxWidth: "400px", width: "90%" }}>
-            <h5 className="mb-3 text-center">
-              <i className="bi bi-pencil-square me-2 text-primary"></i>
-              Editar {editType === "producto" ? "producto" : "servicio"}
-            </h5>
-
+          <div
+            className="card p-4 shadow-lg"
+            style={{ width: "400px", borderRadius: "14px" }}
+          >
+            <h4 className="mb-3 text-center text-primary">
+              <i className="bi bi-pencil-square me-2"></i>
+              Editar {editingItem.nombre ? "servicio" : "producto"}
+            </h4>
             <input
               type="text"
               className="form-control mb-3"
-              value={editName}
-              onChange={(e) => setEditName(e.target.value)}
-              placeholder="Nuevo nombre..."
+              value={editedValue}
+              onChange={(e) => setEditedValue(e.target.value)}
+              autoFocus
             />
-
             <div className="d-flex justify-content-end gap-2">
-              <button className="btn btn-secondary" onClick={() => setShowModal(false)}>
+              <button
+                className="btn btn-outline-secondary"
+                onClick={() => setEditingItem(null)}
+              >
                 Cancelar
               </button>
-              <button className="btn botonRosado" onClick={handleSaveEdit}>
+              <button className="btn botonRosado" onClick={saveEdit}>
                 Guardar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Modal de confirmación de eliminación */}
+      {itemToDelete && (
+        <div
+          className="position-fixed top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center"
+          style={{
+            backgroundColor: "rgba(0,0,0,0.5)",
+            zIndex: 1050,
+          }}
+        >
+          <div
+            className="card p-4 shadow-lg text-center"
+            style={{ width: "400px", borderRadius: "14px" }}
+          >
+            <h4 className="text-danger mb-3">
+              <i className="bi bi-exclamation-triangle-fill me-2"></i>
+              Confirmar eliminación
+            </h4>
+            <p>
+              ¿Seguro que deseas eliminar{" "}
+              <strong>
+                {itemToDelete.nombre || itemToDelete.name}
+              </strong>
+              ?
+            </p>
+            <div className="d-flex justify-content-center gap-3 mt-3">
+              <button
+                className="btn btn-outline-secondary"
+                onClick={() => setItemToDelete(null)}
+              >
+                Cancelar
+              </button>
+              <button className="btn btn-danger" onClick={confirmDelete}>
+                Eliminar
               </button>
             </div>
           </div>

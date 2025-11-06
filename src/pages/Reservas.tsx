@@ -81,7 +81,8 @@ export default function Reserva() {
   };
 
   return (
-    <div className="cajita-fondo">
+  <div className="home-fondo"> 
+    <div className="container cajita-fondo">
       <div className="container cajita-fondo2">
         <h2 className="text-center mb-4">Reserva tu hora</h2>
 
@@ -201,5 +202,6 @@ export default function Reserva() {
         )}
       </div>
     </div>
+  </div>
   );
 }

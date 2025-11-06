@@ -30,7 +30,7 @@ export default function Navbar() {
       setUser(null);
       setIsAdmin(false);
     }
-  }, [location.pathname]); // se ejecuta solo una vez al montar el Navbar
+  }, [location.pathname]); 
 
   const handlerRedirection = () => {
     if (isAdmin) {

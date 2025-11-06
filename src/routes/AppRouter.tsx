@@ -14,11 +14,12 @@ import Perfil from '../pages/Perfil'
 
 
 
+
 export default function AppRouter() {
   return (
     <BrowserRouter>
       <Navbar />
-      <div className="page-container">
+      <div >
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/tienda" element={<Tienda />} />
