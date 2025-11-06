@@ -12,14 +12,14 @@ export default function Home() {
         <div className="container cajita-fondo2 text-center p-4">
           <h1 className="mb-3">Bienvenidos a nuestra página web</h1>
           <p className="mb-4">
-            Nos alegra recibirte en <strong>Mimi</strong>, tu espacio de belleza y bienestar. 
+            Nos alegra recibirte en Mimi, tu espacio de belleza y bienestar. 
             Aquí encontrarás los mejores servicios capilares, asesorías personalizadas 
             y productos de calidad para cuidar de ti y realzar tu estilo.
           </p>
 
           <h2 className="mb-3 mt-5">Nuestros Servicios</h2>
           <p>
-            En <strong>Mimi</strong> ofrecemos tratamientos capilares, asesorías personalizadas 
+            En ofrecemos Mimi ofrecemos tratamientos capilares, asesorías personalizadas 
             y servicios de belleza para que te sientas y luzcas espectacular. 
           </p>
           <button
@@ -89,7 +89,7 @@ export default function Home() {
           <h2 className="mb-3">Nuestra Tienda</h2>
           <p>
             Descubre productos de alta calidad para el cuidado capilar y facial. 
-            ¡Llévate a casa tus favoritos de <strong>Mimi</strong>!
+            ¡Llévate a casa tus favoritos de Mimi!
           </p>
           <button
             className="btn botonRosado mt-3"
@@ -103,7 +103,7 @@ export default function Home() {
         <div className="container cajita-fondo2 sobre-nosotros text-center mb-5">
           <h2>Sobre nosotros</h2>
           <p>
-            En <strong>Mimi</strong> nos destacamos por ofrecer un servicio excepcional, 
+            En Mimi nos destacamos por ofrecer un servicio excepcional, 
             de alta calidad y personalizado. Un ambiente relajante y acogedor 
             para desconectarte del estrés y cuidar tu estilo.
           </p>
