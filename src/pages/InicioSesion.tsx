@@ -1,12 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
-interface User {
-  firstName: string;
-  lastName: string;
-  email: string;
-  password: string;
-}
+import { login } from "../service/AuthService"; // <-- IMPORTANTE
 
 export default function InicioSesion() {
   const navigate = useNavigate();
@@ -14,30 +8,28 @@ export default function InicioSesion() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const users: User[] = JSON.parse(localStorage.getItem("users") || "[]");
-    const adminEmail = "admin@mimi.cl";
-    const adminPassword = "123456";
+    // --- Llamada al backend ---
+    const resp = await login(email, password);
 
-    // Verificar si es administrador
-    if (email === adminEmail && password === adminPassword) {
-      localStorage.setItem("isAdmin", "true");
-      navigate("/admin");
+    if (!resp.success) {
+      setError(resp.message || "Correo o contraseña incorrectos");
       return;
     }
 
-    // Verificar usuario registrado
-    const user = users.find(
-      (u) => u.email === email && u.password === password
-    );
+    // Guardar token y usuario
+    localStorage.setItem("token", resp.token);
+    localStorage.setItem("user", JSON.stringify(resp.user));
 
-    if (user) {
-      localStorage.setItem("user", JSON.stringify(user));
-      navigate("/");
+    // Redirección según rol (basado en el JWT o tu backend)
+    if (resp.user.rolId === 2) {
+      // ADMIN
+      navigate("/admin");
     } else {
-      setError("Correo o contraseña incorrectos");
+      // USUARIO NORMAL
+      navigate("/");
     }
   };
 

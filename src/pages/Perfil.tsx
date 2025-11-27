@@ -1,9 +1,15 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { getProfile } from "../service/AuthService";
 
+// Interface ajustada al DTO del backend
 interface User {
-  firstName?: string;
-  email?: string;
+  idUser: number;
+  nombre: string;
+  apellido: string;
+  correo: string;
+  phone: string;
+  rolId: number;
 }
 
 export default function Perfil() {
@@ -11,36 +17,39 @@ export default function Perfil() {
   const [user, setUser] = useState<User | null>(null);
   const [isAdmin, setIsAdmin] = useState(false);
 
-  //Cargar datos guardados del usuario
   useEffect(() => {
-    const storedUser = localStorage.getItem("user");
-    const admin = localStorage.getItem("isAdmin");
+    const token = localStorage.getItem("token");
 
-    if (admin === "true") {
-      setIsAdmin(true);
-      setUser({ firstName: "Administrador", email: "admin@mimi.cl" });
-    } else if (storedUser) {
-      setUser(JSON.parse(storedUser));
-      setIsAdmin(false);
-    } else {
+    if (!token) {
       setUser(null);
-      setIsAdmin(false);
+      return;
     }
+
+    getProfile(token).then((data) => {
+      if (!data) {
+        // Token inválido o expirado
+        localStorage.removeItem("token");
+        setUser(null);
+      } else {
+        setUser(data);
+        setIsAdmin(data.rolId === 2); // ADMIN = rolId 2
+      }
+    });
   }, []);
 
-  //Cerrar sesión
   const handleLogout = () => {
+    localStorage.removeItem("token");
     localStorage.removeItem("user");
-    localStorage.removeItem("isAdmin");
-    setUser(null);
-    setIsAdmin(false);
     navigate("/inicio");
   };
 
-  //Sin sesión activa
+  // Si no hay sesión activa
   if (!user) {
     return (
-      <div className="home-fondo d-flex justify-content-center align-items-center" style={{ minHeight: "100vh" }}>
+      <div
+        className="home-fondo d-flex justify-content-center align-items-center"
+        style={{ minHeight: "100vh" }}
+      >
         <div
           className="card p-5 text-center shadow-lg border-0"
           style={{ backgroundColor: "white", borderRadius: "12px", maxWidth: "400px" }}
@@ -55,22 +64,26 @@ export default function Perfil() {
     );
   }
 
-  //Vista del usuario o admin
+  // Vista usuario o admin
   return (
-    <div className="home-fondo d-flex justify-content-center align-items-center" style={{ minHeight: "100vh" }}>
+    <div
+      className="home-fondo d-flex justify-content-center align-items-center"
+      style={{ minHeight: "100vh" }}
+    >
       <div
         className="card p-4 text-center shadow-lg border-0"
         style={{ backgroundColor: "white", borderRadius: "12px", maxWidth: "500px", width: "100%" }}
       >
-        <h2 className="mb-4">
-          {isAdmin ? "Panel de Administrador" : "Tu Cuenta"}
-        </h2>
+        <h2 className="mb-4">{isAdmin ? "Panel de Administrador" : "Tu Cuenta"}</h2>
 
         <p>
-          <strong>Nombre:</strong> {user.firstName}
+          <strong>Nombre:</strong> {user.nombre} {user.apellido}
         </p>
         <p>
-          <strong>Correo:</strong> {user.email}
+          <strong>Correo:</strong> {user.correo}
+        </p>
+        <p>
+          <strong>Teléfono:</strong> {user.phone}
         </p>
 
         <p>
