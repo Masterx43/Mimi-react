@@ -15,6 +15,16 @@ export interface Reserva {
   trabajadorNombre: string;
 }
 
+export interface ReservaDetalle {
+  idReserva: number;
+  fecha: string;
+  hora: string;
+  estado: string;
+  usuario: string;
+  trabajador: string;
+  servicio: string;
+}
+
 
 export interface CrearReservaPayload {
   idUsuario: number;

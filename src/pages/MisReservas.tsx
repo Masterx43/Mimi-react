@@ -2,12 +2,12 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { getReservasByUsuario, cancelarReserva } from "../api/reservaService";
-import type { Reserva } from "../interfaces/Reserva";
+import type { ReservaDetalle } from "../interfaces/Reserva";
 
 export default function MisReservas() {
   const navigate = useNavigate();
 
-  const [reservas, setReservas] = useState<Reserva[]>([]);
+  const [reservas, setReservas] = useState<ReservaDetalle[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [mensaje, setMensaje] = useState("");
@@ -73,8 +73,8 @@ export default function MisReservas() {
           reservas.map((r) => (
             <div key={r.idReserva} className="card mb-3 p-3 shadow-sm">
 
-              <h5 className="fw-bold">{r.servicioNombre}</h5>
-              <p><strong>Profesional:</strong> {r.trabajadorNombre}</p>
+              <h5 className="fw-bold">{r.servicio}</h5>
+              <p><strong>Profesional:</strong> {r.trabajador}</p>
               <p><strong>Fecha:</strong> {r.fecha}</p>
               <p><strong>Hora:</strong> {r.hora}</p>
 

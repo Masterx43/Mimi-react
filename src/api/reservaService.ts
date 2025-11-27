@@ -26,7 +26,7 @@ export async function crearReserva(payload: CrearReservaPayload): Promise<Reserv
 
 
 export async function getReservasByUsuario(idUsuario: number) {
-  const res = await fetch(`http://localhost:8086/api/reservas/usuario/${idUsuario}`);
+  const res = await fetch(`http://localhost:8086/api/reservas/usuario/detalle/${idUsuario}`);
 
   if (!res.ok) {
     throw new Error("Error al cargar reservas del usuario");
