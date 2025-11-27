@@ -30,7 +30,7 @@ export default function AppRouter() {
           <Route path="/carrito" element={<Carrito />} />
           <Route path="/producto/:id" element={<ProductoDetalle />} />
           <Route path="/reserva" element= {<Reserva />}/>
-          <Route path="/MisReservas" element={<MisReservas />} />
+          <Route path="/mis-reservas" element={<MisReservas />} />
           <Route path= "/inicio" element={<InicioSesion/>}/>
           <Route path="/registro" element= {<Registro/>}/>
           <Route path="/admin" element ={<Admin/>}/>

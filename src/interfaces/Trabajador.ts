@@ -1,4 +1,8 @@
 export interface Trabajador {
-  idTrabajador: number;
-  nombreCompleto: string;
+  idUser: number;
+  nombre: string;
+  apellido: string;
+  correo: string;
+  phone: string;
+  rolId: number;
 }

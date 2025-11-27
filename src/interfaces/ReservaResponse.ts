@@ -1,7 +1,7 @@
 export interface ReservaResponse {
   success: boolean;
   message: string;
-  reserva?: {
+  data?: {
     idReserva: number;
     idUsuario: number;
     idServicio: number;

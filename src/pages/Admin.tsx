@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { services } from "../data/service";
 import { products } from "../data/products";
 
 interface User {
@@ -17,7 +16,6 @@ interface EditableItem {
 
 export default function AdminPanel() {
   const [users, setUsers] = useState<User[]>([]);
-  const [serviceList, setServiceList] = useState(services);
   const [productList, setProductList] = useState(products);
   const [editingItem, setEditingItem] = useState<EditableItem | null>(null);
   const [itemToDelete, setItemToDelete] = useState<EditableItem | null>(null);
@@ -45,11 +43,7 @@ export default function AdminPanel() {
     if (!editingItem) return;
 
     if ("nombre" in editingItem) {
-      setServiceList((prev) =>
-        prev.map((s) =>
-          s.id === editingItem.id ? { ...s, nombre: editedValue } : s
-        )
-      );
+      return
     } else if ("name" in editingItem) {
       setProductList((prev) =>
         prev.map((p) =>
@@ -71,9 +65,7 @@ export default function AdminPanel() {
     if (!itemToDelete) return;
 
     if ("nombre" in itemToDelete) {
-      setServiceList((prev) =>
-        prev.filter((s) => s.id !== itemToDelete.id)
-      );
+      return
     } else if ("name" in itemToDelete) {
       setProductList((prev) =>
         prev.filter((p) => p.id !== itemToDelete.id)
@@ -128,36 +120,7 @@ export default function AdminPanel() {
         </section>
 
         {/*Servicios */}
-        <section className="mb-5">
-          <h4 className="fw-bold mb-3 text-start">
-            <i className="bi bi-scissors me-2 text-secondary"></i>
-            Servicios
-          </h4>
-          <div className="list-group border rounded-3">
-            {serviceList.map((service) => (
-              <div
-                key={service.id}
-                className="list-group-item d-flex justify-content-between align-items-center"
-              >
-                <span>{service.nombre}</span>
-                <div className="d-flex gap-2">
-                  <button
-                    className="btn btn-outline-primary btn-sm px-3"
-                    onClick={() => handleEdit(service)}
-                  >
-                    Editar
-                  </button>
-                  <button
-                    className="btn btn-outline-danger btn-sm px-3"
-                    onClick={() => handleDelete(service)}
-                  >
-                    Eliminar
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
+        
 
         {/*Productos */}
         <section>

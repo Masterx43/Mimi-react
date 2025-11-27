@@ -138,7 +138,7 @@ export default function Reserva() {
       console.log("⏳ Enviando reserva:", payload);
 
       const res: ReservaResponse = await crearReserva(payload);
-
+      console.log("pasa por aqui")
       if (!res.success) {
         setError(res.message || "No se pudo crear la reserva");
         return;
@@ -200,8 +200,8 @@ export default function Reserva() {
               >
                 <option value="">Selecciona un profesional</option>
                 {trabajadores.map((t) => (
-                  <option key={t.idTrabajador} value={t.idTrabajador}>
-                    {t.nombreCompleto}
+                  <option key={t.idUser} value={t.idUser}>
+                    {t.nombre} {t.apellido}
                   </option>
                 ))}
               </select>

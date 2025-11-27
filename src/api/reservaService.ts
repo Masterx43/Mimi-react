@@ -9,7 +9,7 @@ export interface CrearReservaPayload {
 }
 
 export async function crearReserva(payload: CrearReservaPayload): Promise<ReservaResponse> {
-  const res = await fetch("http://localhost:8086/api/reservas", {
+  const res = await fetch("http://localhost:8086/api/reservas/crear", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -26,7 +26,7 @@ export async function crearReserva(payload: CrearReservaPayload): Promise<Reserv
 
 
 export async function getReservasByUsuario(idUsuario: number) {
-  const res = await fetch(`http://localhost:8084/api/reservas/usuario/${idUsuario}`);
+  const res = await fetch(`http://localhost:8086/api/reservas/usuario/${idUsuario}`);
 
   if (!res.ok) {
     throw new Error("Error al cargar reservas del usuario");
@@ -36,7 +36,7 @@ export async function getReservasByUsuario(idUsuario: number) {
 }
 
 export async function cancelarReserva(idReserva: number) {
-  const res = await fetch(`http://localhost:8084/api/reservas/${idReserva}`, {
+  const res = await fetch(`http://localhost:8086/api/reservas/${idReserva}`, {
     method: "DELETE"
   });
 
@@ -46,7 +46,7 @@ export async function cancelarReserva(idReserva: number) {
 }
 
 export async function getReservaById(idReserva: number) {
-  const res = await fetch(`http://localhost:8084/api/reservas/${idReserva}`);
+  const res = await fetch(`http://localhost:8086/api/reservas/${idReserva}`);
 
   if (!res.ok) throw new Error("Reserva no encontrada");
 
