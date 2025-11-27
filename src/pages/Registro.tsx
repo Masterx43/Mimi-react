@@ -1,146 +1,141 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
-// Definimos el tipo de usuario
-interface User {
-    firstName: string;
-    lastName: string;
-    email: string;
-    password: string;
-}
+import { registerUser } from "../api/authService";
 
 export default function Registro() {
-    const navigate = useNavigate();
-    const [firstName, setFirstName] = useState("");
-    const [lastName, setLastName] = useState("");
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [confirmPassword, setConfirmPassword] = useState("");
-    const [error, setError] = useState("");
-    const [success, setSuccess] = useState("");
+  const navigate = useNavigate();
 
-    const handleRegister = (e: React.FormEvent) => {
-        e.preventDefault();
+  const [nombre, setNombre] = useState("");
+  const [apellido, setApellido] = useState("");
+  const [correo, setCorreo] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [mensaje, setMensaje] = useState("");
 
-        // Validación de contraseñas
-        if (password !== confirmPassword) {
-            setError("Las contraseñas no coinciden");
-            return;
-        }
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError("");
+    setMensaje("");
 
-        const existingUsers: User[] = JSON.parse(localStorage.getItem("users") || "[]");
+    if (!nombre || !apellido || !correo || !password) {
+      setError("Debes completar todos los campos");
+      return;
+    }
 
-        // Verificar si el correo ya existe
-        if (existingUsers.some((u) => u.email === email)) {
-            setError("Ya existe una cuenta con este correo");
-            return;
-        }
+    try {
+      const res = await registerUser({
+        nombre,
+        apellido,
+        correo,
+        password,
+        rolId: 1, // 1 = Usuario normal según tu backend
+      });
 
-        // Crear nuevo usuario
-        const newUser: User = { firstName, lastName, email, password };
-        localStorage.setItem("users", JSON.stringify([...existingUsers, newUser]));
+      if (!res.success) {
+        setError(res.message || "Error en el registro");
+        return;
+      }
 
+      // Guardar token y datos del usuario
+      localStorage.setItem("token", res.token);
+      localStorage.setItem("user", JSON.stringify(res.user));
 
-        setSuccess("Registro exitoso");
-        setError("");
+      setMensaje("¡Registro exitoso! Redirigiendo...");
+      setTimeout(() => navigate("/perfil"), 1500);
 
-        // Redirigir después de 1.5 segundos al inicio de sesión
-        setTimeout(() => navigate("/inicio"), 1500);
-    };
+    } catch (err) {
+      setError("Error al conectar con el servidor");
+      console.error(err);
+    }
+  };
 
-    return (
-        <div className="home-fondo">
-            <div className="container cajita-fondo">
-                <div className="cajita-fondo2 p-4" style={{ maxWidth: "450px" }}>
-                    <h2 className="text-center mb-4">
-                        <i className="bi bi-person-plus-fill me-2 text-primary"></i>
-                        Crear cuenta
-                    </h2>
+  return (
+    <div className="home-fondo">
+      <div className="container cajita-fondo">
+        <div
+          className="cajita-fondo2 p-4 shadow-lg"
+          style={{ maxWidth: "450px", borderRadius: "16px" }}
+        >
+          <h2 className="text-center mb-4">
+            <i className="bi bi-person-plus-fill me-2 text-primary"></i>
+            Crear cuenta
+          </h2>
 
-                    {error && <div className="alert alert-danger">{error}</div>}
-                    {success && <div className="alert alert-success">{success}</div>}
+          {error && <div className="alert alert-danger text-center">{error}</div>}
+          {mensaje && <div className="alert alert-success text-center">{mensaje}</div>}
 
-                    <form onSubmit={handleRegister}>
-                        <div className="mb-3">
-                            <label className="form-label">Nombres</label>
-                            <input
-                                type="text"
-                                className="form-control"
-                                value={firstName}
-                                onChange={(e) => setFirstName(e.target.value)}
-                                placeholder="Ej: Juan "
-                                required
-                            />
-                        </div>
-
-                        <div className=" mb-3">
-                            <label className="form-label">Apellidos</label>
-                            <input
-                                type="text"
-                                className="form-control"
-                                value={lastName}
-                                onChange={(e) => setLastName(e.target.value)}
-                                placeholder="Ej: Torres"
-                                required
-                            />
-                        </div>
-
-                        <div className="mb-3">
-                            <label className="form-label">Correo electrónico</label>
-                            <input
-                                type="email"
-                                className="form-control"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                                placeholder="ejemplo@mimi.cl"
-                                required
-                            />
-                        </div>
-
-                        <div className="mb-3">
-                            <label className="form-label">Contraseña</label>
-                            <input
-                                type="password"
-                                className="form-control"
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                                placeholder="Mínimo 6 caracteres"
-                                required
-                                minLength={6}
-                            />
-                        </div>
-
-                        <div className="mb-3">
-                            <label className="form-label">Confirmar contraseña</label>
-                            <input
-                                type="password"
-                                className="form-control"
-                                value={confirmPassword}
-                                onChange={(e) => setConfirmPassword(e.target.value)}
-                                placeholder="Repite la contraseña"
-                                required
-                            />
-                        </div>
-
-                        <button type="submit" className="btn botonRosado w-100">
-                            Registrarse
-                        </button>
-
-                        <p className="text-center mt-3">
-                            ¿Ya tienes cuenta?{" "}
-                            <a
-                                href="#"
-                                onClick={(e) => {
-                                    e.preventDefault();
-                                    navigate("/inicio");
-                                }}
-                            >
-                                Inicia sesión aquí
-                            </a>
-                        </p>
-                    </form>
-                </div>
+          <form onSubmit={handleSubmit}>
+            {/* Nombre */}
+            <div className="mb-3">
+              <label className="form-label">Nombre</label>
+              <input
+                type="text"
+                className="form-control"
+                value={nombre}
+                onChange={(e) => setNombre(e.target.value)}
+                placeholder="Ej: María"
+                required
+              />
             </div>
+
+            {/* Apellido */}
+            <div className="mb-3">
+              <label className="form-label">Apellido</label>
+              <input
+                type="text"
+                className="form-control"
+                value={apellido}
+                onChange={(e) => setApellido(e.target.value)}
+                placeholder="Ej: López"
+                required
+              />
+            </div>
+
+            {/* Correo */}
+            <div className="mb-3">
+              <label className="form-label">Correo electrónico</label>
+              <input
+                type="email"
+                className="form-control"
+                value={correo}
+                onChange={(e) => setCorreo(e.target.value)}
+                placeholder="Ej: maria@example.cl"
+                required
+              />
+            </div>
+
+            {/* Contraseña */}
+            <div className="mb-3">
+              <label className="form-label">Contraseña</label>
+              <input
+                type="password"
+                className="form-control"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="••••••••"
+                required
+              />
+            </div>
+
+            <button type="submit" className="btn botonRosado w-100">
+              Crear cuenta
+            </button>
+
+            <p className="text-center mt-3">
+              ¿Ya tienes cuenta?{" "}
+              <a
+                href="#"
+                onClick={(e) => {
+                  e.preventDefault();
+                  navigate("/inicio");
+                }}
+              >
+                Inicia sesión aquí
+              </a>
+            </p>
+          </form>
         </div>
-    );
+      </div>
+    </div>
+  );
 }

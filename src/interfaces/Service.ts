@@ -1,8 +1,7 @@
 export interface Service {
-  id: string;
+  idServicio: number;
   nombre: string;
-  descCorta: string;
-  descLarga: string;
+  descripcion: string;
   precio: number;
-  img: string;
+  imagen: string;
 }

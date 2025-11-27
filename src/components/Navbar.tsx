@@ -1,4 +1,4 @@
-import { Link, NavLink, useNavigate , useLocation } from "react-router-dom";
+import { Link, NavLink, useNavigate, useLocation } from "react-router-dom";
 import { useCart } from "../hooks/useCart.ts";
 import logo from "../assets/img/logotopbarmimi.png";
 import { useEffect, useState } from "react";
@@ -18,19 +18,21 @@ export default function Navbar() {
   // Cargar sesión activa al iniciar la app
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
-    const admin = localStorage.getItem("isAdmin");
 
-    if (admin === "true") {
-      setIsAdmin(true);
-      setUser({ name: "Administrador" });
-    } else if (storedUser) {
-      setUser(JSON.parse(storedUser));
-      setIsAdmin(false);
+    if (storedUser) {
+      const userData = JSON.parse(storedUser);
+      setUser({
+        name: userData.name,
+        email: userData.email,
+      });
+
+      setIsAdmin(userData.role === "ADMIN");
     } else {
       setUser(null);
       setIsAdmin(false);
     }
-  }, [location.pathname]); 
+  }, [location.pathname]);
+
 
   const handlerRedirection = () => {
     if (isAdmin) {
@@ -87,10 +89,10 @@ export default function Navbar() {
           >
             <i
               className={`bi ${isAdmin
-                  ? "bi-shield-lock-fill text-warning" // admin
-                  : user
-                    ? "bi-person-circle text-success" // usuario
-                    : "bi-person text-dark" // sin sesión
+                ? "bi-shield-lock-fill text-warning" // admin
+                : user
+                  ? "bi-person-circle text-success" // usuario
+                  : "bi-person text-dark" // sin sesión
                 }`}
               style={{ fontSize: "1.5rem" }}
             ></i>

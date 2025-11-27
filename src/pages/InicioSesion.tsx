@@ -1,12 +1,6 @@
 import { useState } from "react";
+import { login } from "../api/authService";
 import { useNavigate } from "react-router-dom";
-
-interface User {
-  firstName: string;
-  lastName: string;
-  email: string;
-  password: string;
-}
 
 export default function InicioSesion() {
   const navigate = useNavigate();
@@ -14,32 +8,29 @@ export default function InicioSesion() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError("");
 
-    const users: User[] = JSON.parse(localStorage.getItem("users") || "[]");
-    const adminEmail = "admin@mimi.cl";
-    const adminPassword = "123456";
+    try {
+      const res = await login(email, password);
 
-    // Verificar si es administrador
-    if (email === adminEmail && password === adminPassword) {
-      localStorage.setItem("isAdmin", "true");
-      navigate("/admin");
-      return;
-    }
+      if (!res.success || !res.user) {
+        setError("Credenciales incorrectas");
+        return;
+      }
 
-    // Verificar usuario registrado
-    const user = users.find(
-      (u) => u.email === email && u.password === password
-    );
+      localStorage.setItem("token", res.token);
+      localStorage.setItem("user", JSON.stringify(res.user));
 
-    if (user) {
-      localStorage.setItem("user", JSON.stringify(user));
-      navigate("/");
-    } else {
-      setError("Correo o contraseña incorrectos");
+      navigate("/perfil");
+
+    } catch (e) {
+      console.error("Error en login: ",e);
+      setError("Error al conectar con el servidor");
     }
   };
+
 
   return (
     <div className="home-fondo">

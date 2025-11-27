@@ -11,6 +11,7 @@ import InicioSesion from '../pages/InicioSesion';
 import Registro from '../pages/Registro';
 import Admin from '../pages/Admin';
 import Perfil from '../pages/Perfil'
+import MisReservas from '../pages/MisReservas';
 
 
 
@@ -25,9 +26,11 @@ export default function AppRouter() {
           <Route path="/tienda" element={<Tienda />} />
           <Route path="/servicios" element={<Servicios />} /> 
           <Route path="Servicio/:id" element={<ServicioDetalle/>}/>
+          <Route path="/servicio/:id" element={<ServicioDetalle />} />
           <Route path="/carrito" element={<Carrito />} />
           <Route path="/producto/:id" element={<ProductoDetalle />} />
           <Route path="/reserva" element= {<Reserva />}/>
+          <Route path="/MisReservas" element={<MisReservas />} />
           <Route path= "/inicio" element={<InicioSesion/>}/>
           <Route path="/registro" element= {<Registro/>}/>
           <Route path="/admin" element ={<Admin/>}/>
