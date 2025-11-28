@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { products } from "../data/products";
+import { getProducts } from "../api/productService";
+import type { Product } from "../interfaces/Product";
 
 interface User {
   name: string;
@@ -8,23 +9,36 @@ interface User {
 }
 
 interface EditableItem {
-  id: string;
-  nombre?: string; // servicios
-  name?: string;   // productos
+  idProduct: number;
+  nombre: string;
 }
-
 
 export default function AdminPanel() {
   const [users, setUsers] = useState<User[]>([]);
-  const [productList, setProductList] = useState(products);
+  const [productList, setProductList] = useState<Product[]>([]);
   const [editingItem, setEditingItem] = useState<EditableItem | null>(null);
   const [itemToDelete, setItemToDelete] = useState<EditableItem | null>(null);
   const [editedValue, setEditedValue] = useState("");
   const navigate = useNavigate();
 
+  // Cargar usuarios desde localStorage
   useEffect(() => {
     const storedUsers = JSON.parse(localStorage.getItem("users") || "[]");
     setUsers(storedUsers);
+  }, []);
+
+  // Cargar productos del microservicio
+  useEffect(() => {
+    const loadProducts = async () => {
+      try {
+        const data = await getProducts();
+        setProductList(data);
+      } catch (error) {
+        console.error("Error cargando productos en AdminPanel:", error);
+      }
+    };
+
+    loadProducts();
   }, []);
 
   const handleLogout = () => {
@@ -32,45 +46,45 @@ export default function AdminPanel() {
     navigate("/inicio");
   };
 
-  // Abrir modal de edición (este funciona para servicios o productos)
-  const handleEdit = (item: EditableItem) => {
-    setEditingItem(item);
-    setEditedValue(item.nombre || item.name || "");
+  // Abrir modal de edición
+  const handleEdit = (item: Product) => {
+    setEditingItem({
+      idProduct: item.idProduct,
+      nombre: item.nombre,
+    });
+    setEditedValue(item.nombre);
   };
 
-  // Guardar cambios (detecta si es servicio o producto)
+  // Guardar cambios
   const saveEdit = () => {
     if (!editingItem) return;
 
-    if ("nombre" in editingItem) {
-      return
-    } else if ("name" in editingItem) {
-      setProductList((prev) =>
-        prev.map((p) =>
-          p.id === editingItem.id ? { ...p, name: editedValue } : p
-        )
-      );
-    }
+    setProductList((prev) =>
+      prev.map((p) =>
+        p.idProduct === editingItem.idProduct
+          ? { ...p, nombre: editedValue }
+          : p
+      )
+    );
 
     setEditingItem(null);
   };
 
-  //Abrir modal de confirmación
-  const handleDelete = (item: EditableItem) => {
-    setItemToDelete(item);
+  // Abrir modal de eliminar
+  const handleDelete = (item: Product) => {
+    setItemToDelete({
+      idProduct: item.idProduct,
+      nombre: item.nombre,
+    });
   };
 
-  //Confirmar eliminación
+  // Confirmar eliminación
   const confirmDelete = () => {
     if (!itemToDelete) return;
 
-    if ("nombre" in itemToDelete) {
-      return
-    } else if ("name" in itemToDelete) {
-      setProductList((prev) =>
-        prev.filter((p) => p.id !== itemToDelete.id)
-      );
-    }
+    setProductList((prev) =>
+      prev.filter((p) => p.idProduct !== itemToDelete.idProduct)
+    );
 
     setItemToDelete(null);
   };
@@ -92,10 +106,10 @@ export default function AdminPanel() {
         </h1>
 
         <p className="text-center text-muted mb-4">
-          Bienvenido administrador. Gestiona usuarios, servicios y productos.
+          Bienvenido administrador. Gestiona usuarios y productos.
         </p>
 
-        {/*Usuarios */}
+        {/* Usuarios */}
         <section className="mb-5">
           <h4 className="fw-bold mb-3 text-start">
             <i className="bi bi-people-fill me-2 text-secondary"></i>
@@ -119,10 +133,7 @@ export default function AdminPanel() {
           </div>
         </section>
 
-        {/*Servicios */}
-        
-
-        {/*Productos */}
+        {/* Productos */}
         <section>
           <h4 className="fw-bold mb-3 text-start">
             <i className="bi bi-bag-heart-fill me-2 text-secondary"></i>
@@ -131,10 +142,10 @@ export default function AdminPanel() {
           <div className="list-group border rounded-3">
             {productList.map((product) => (
               <div
-                key={product.id}
+                key={product.idProduct}
                 className="list-group-item d-flex justify-content-between align-items-center"
               >
-                <span>{product.name}</span>
+                <span>{product.nombre}</span>
                 <div className="d-flex gap-2">
                   <button
                     className="btn btn-outline-primary btn-sm px-3"
@@ -154,7 +165,7 @@ export default function AdminPanel() {
           </div>
         </section>
 
-        {/*Botón cerrar sesión */}
+        {/* Logout */}
         <div className="text-center mt-5">
           <button className="btn btn-danger px-4" onClick={handleLogout}>
             Cerrar sesión
@@ -162,22 +173,15 @@ export default function AdminPanel() {
         </div>
       </div>
 
-      {/* Modal de edición */}
+      {/* Modal editar */}
       {editingItem && (
-        <div
-          className="position-fixed top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center"
-          style={{
-            backgroundColor: "rgba(0,0,0,0.5)",
-            zIndex: 1050,
-          }}
+        <div className="position-fixed top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center"
+          style={{ backgroundColor: "rgba(0,0,0,0.5)", zIndex: 1050 }}
         >
-          <div
-            className="card p-4 shadow-lg"
-            style={{ width: "400px", borderRadius: "14px" }}
-          >
+          <div className="card p-4 shadow-lg" style={{ width: "400px", borderRadius: "14px" }}>
             <h4 className="mb-3 text-center text-primary">
               <i className="bi bi-pencil-square me-2"></i>
-              Editar {editingItem.nombre ? "servicio" : "producto"}
+              Editar producto
             </h4>
             <input
               type="text"
@@ -201,29 +205,18 @@ export default function AdminPanel() {
         </div>
       )}
 
-      {/* Modal de confirmación de eliminación */}
+      {/* Modal eliminar */}
       {itemToDelete && (
-        <div
-          className="position-fixed top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center"
-          style={{
-            backgroundColor: "rgba(0,0,0,0.5)",
-            zIndex: 1050,
-          }}
+        <div className="position-fixed top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center"
+          style={{ backgroundColor: "rgba(0,0,0,0.5)", zIndex: 1050 }}
         >
-          <div
-            className="card p-4 shadow-lg text-center"
-            style={{ width: "400px", borderRadius: "14px" }}
-          >
+          <div className="card p-4 shadow-lg text-center" style={{ width: "400px", borderRadius: "14px" }}>
             <h4 className="text-danger mb-3">
               <i className="bi bi-exclamation-triangle-fill me-2"></i>
               Confirmar eliminación
             </h4>
             <p>
-              ¿Seguro que deseas eliminar{" "}
-              <strong>
-                {itemToDelete.nombre || itemToDelete.name}
-              </strong>
-              ?
+              ¿Seguro que deseas eliminar <strong>{itemToDelete.nombre}</strong>?
             </p>
             <div className="d-flex justify-content-center gap-3 mt-3">
               <button

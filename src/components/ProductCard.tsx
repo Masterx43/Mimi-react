@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import type {Product } from "../interfaces/Product";
+import type { Product } from "../interfaces/Product";
 import { CLP } from "../utils/currency.ts";
 import { useCart } from "../hooks/useCart.ts";
 
@@ -11,24 +11,28 @@ export default function ProductCard({ product }: Props) {
   const { add } = useCart();
 
   const goDetail = useCallback(() => {
-    navigate(`/producto/${product.id}`);
-  }, [navigate, product.id]);
+    navigate(`/producto/${product.idProduct}`);
+  }, [navigate, product.idProduct]);
 
   return (
     <div className="col-12 col-md-6 col-xl-4">
       <div className="card h-100">
+
         <img
-          src={product.image}
+          src={`http://localhost:8087/${product.imagen}`} 
           className="card-img-top fit contain"
-          alt={product.name}
+          alt={product.nombre}
         />
+
         <div className="card-body text-center d-flex flex-column">
-          <h5 className="card-title">{product.name}</h5>
-          <p className="fw-bold mb-2">{CLP.format(product.price)}</p>
+          <h5 className="card-title">{product.nombre}</h5>
+          <p className="fw-bold mb-2">{CLP.format(product.precio)}</p>
+
           <div className="d-grid gap-2 mt-auto">
             <button className="btn botonRosado" onClick={goDetail}>
               Ver detalle
             </button>
+
             <button
               className="btn btn-outline-secondary"
               onClick={() => add(product)}

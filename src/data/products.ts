@@ -1,11 +1,11 @@
 
-import { productImages } from './images'
+/*import { productImages } from './images'
 import type { Product } from '../interfaces/Product';
 
 //Lista completa de productos con imports
 export const products: Product[] = [
   {
-    id: 'SKU-001',
+    idProduct: 'SKU-001',
     name: 'Mascarilla Capilar Hidratante',
     description:
       'Nutre tu cabello con extractos naturales y brillo duradero. Ideal para cabellos secos o dañados.',
@@ -122,3 +122,4 @@ export const products: Product[] = [
     category: 'Coloración',
   },
 ];
+*/

@@ -1,6 +1,6 @@
 import { useEffect, useState, useMemo } from "react";
 import ProductCard from "../components/ProductCard";
-import { products as initialProducts } from "../data/products";
+import { getProducts } from "../api/productService";
 import type { Product } from "../interfaces/Product";
 
 export default function Tienda() {
@@ -8,15 +8,22 @@ export default function Tienda() {
   const [products, setProducts] = useState<Product[]>([]);
 
   useEffect(() => {
-    // Simula fetch local (puedes cambiarlo por un fetch real)
-    setProducts(initialProducts);
+    const fetchProducts = async () => {
+      try {
+        const data = await getProducts(); // ← microservicio real
+        setProducts(data);
+      } catch (error) {
+        console.error("Error cargando productos:", error);
+      }
+    };
+
+    fetchProducts();
   }, []);
 
-  // Filtrado de productos según búsqueda
   const filteredProducts = useMemo(() => {
     if (!query.trim()) return products;
     return products.filter((p) =>
-      p.name.toLowerCase().includes(query.toLowerCase())
+      p.nombre.toLowerCase().includes(query.toLowerCase())
     );
   }, [query, products]);
 
@@ -27,7 +34,6 @@ export default function Tienda() {
           <div className="container cajita-fondo3">
             <h2 className="text-center mb-3">Tienda</h2>
 
-            {/* Barra de búsqueda con ícono */}
             <div className="text-center mb-4">
               <div className="input-group mx-auto" style={{ maxWidth: "400px" }}>
                 <input
@@ -48,11 +54,10 @@ export default function Tienda() {
             </div>
           </div>
 
-          {/* Lista de productos */}
           <div className="row g-4">
             {filteredProducts.length > 0 ? (
               filteredProducts.map((p) => (
-                <ProductCard key={p.id} product={p} />
+                <ProductCard key={p.idProduct} product={p} />
               ))
             ) : (
               <p className="text-center mt-4">
