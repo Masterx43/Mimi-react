@@ -61,7 +61,7 @@ export default function ServicioDetalle() {
             {/* Imagen */}
             <div className="col-md-6 mb-4 mb-md-0">
               <img
-                src={servicio.imagen}
+                src={servicio.imagenUrl}
                 alt={servicio.nombre}
                 className="img-fluid rounded shadow-sm"
                 style={{

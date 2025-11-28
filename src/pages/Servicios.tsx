@@ -74,7 +74,7 @@ export default function Servicios() {
                   <div className="card h-100 shadow-sm text-center border-0">
 
                     <img
-                      src={service.imagen}
+                      src={service.imagenUrl}
                       alt={service.nombre}
                       className="card-img-top"
                       style={{

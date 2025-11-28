@@ -3,5 +3,5 @@ export interface Service {
   nombre: string;
   descripcion: string;
   precio: number;
-  imagen: string;
+  imagenUrl: string;  // <-- nombre correcto
 }
