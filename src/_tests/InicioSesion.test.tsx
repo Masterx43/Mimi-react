@@ -65,7 +65,7 @@ describe("InicioSesion page", () => {
   });
 
   // --------------------------------------------------------------
-  it("realiza login exitoso, guarda datos y redirige al perfil", async () => {
+  it("realiza login exitoso, guarda datos y redirige al home", async () => {
     mockLogin.mockResolvedValue({
       success: true,
       token: "TOKEN123",
@@ -90,7 +90,7 @@ describe("InicioSesion page", () => {
         name: "Juan",
         email: "juan@mimi.cl",
       });
-      expect(mockNavigate).toHaveBeenCalledWith("/perfil");
+      expect(mockNavigate).toHaveBeenCalledWith("/");
     });
   });
 

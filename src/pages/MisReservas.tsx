@@ -43,7 +43,7 @@ export default function MisReservas() {
 
     try {
       const res = await cancelarReserva(idReserva);
-      if (res.estado === "CANCELADA") {
+      if (res.estado !== "CANCELADA") {
         setError(res.message || "No se pudo cancelar la reserva");
         return;
       }

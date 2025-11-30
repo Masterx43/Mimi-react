@@ -18,6 +18,7 @@ vi.mock("react-router-dom", async () => {
 const mockRegister = vi.fn();
 
 vi.mock("../api/authService", () => ({
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   registerUser: (...args: any[]) => mockRegister(...args),
 }));
 

@@ -18,6 +18,7 @@ vi.mock("react-router-dom", async () => {
 const mockGetProfile = vi.fn();
 
 vi.mock("../api/authService", () => ({
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   getUserProfile: (...args: any[]) => mockGetProfile(...args),
 }));
 
@@ -38,7 +39,7 @@ describe("Perfil page", () => {
 
   // -----------------------------------------------------
   it("muestra pantalla de carga mientras loading = true", async () => {
-    mockGetProfile.mockResolvedValueOnce({}); // resolver después
+    mockGetProfile.mockResolvedValueOnce({}); // se resolverá luego
 
     renderPerfil();
 
@@ -57,9 +58,7 @@ describe("Perfil page", () => {
       ).toBeInTheDocument()
     );
 
-    const btn = screen.getByText("Ir a Iniciar sesión");
-    fireEvent.click(btn);
-
+    fireEvent.click(screen.getByText("Ir a Iniciar sesión"));
     expect(mockNavigate).toHaveBeenCalledWith("/inicio");
   });
 
@@ -84,17 +83,20 @@ describe("Perfil page", () => {
       nombre: "Bastián",
       apellido: "Gómez",
       correo: "bastian@test.cl",
+      phone: "123456789",
       rolId: 1,
     });
 
     renderPerfil();
 
+    // El título ahora es "Tu Perfil"
     await waitFor(() =>
-      expect(screen.getByText("Tu Cuenta")).toBeInTheDocument()
+      expect(screen.getByText("Tu Perfil")).toBeInTheDocument()
     );
 
     expect(screen.getByText("Bastián Gómez")).toBeInTheDocument();
     expect(screen.getByText("bastian@test.cl")).toBeInTheDocument();
+    expect(screen.getByText("123456789")).toBeInTheDocument(); // teléfono
     expect(screen.getByText(/Usuario/)).toBeInTheDocument();
   });
 

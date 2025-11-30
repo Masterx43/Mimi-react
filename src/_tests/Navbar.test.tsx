@@ -3,22 +3,23 @@ import { render, screen, fireEvent } from "@testing-library/react";
 import Navbar from "../components/Navbar";
 import { MemoryRouter } from "react-router-dom";
 
-// === MOCK: useCart ===
+// === MOCK useCart ===
 vi.mock("../hooks/useCart.ts", () => ({
-  useCart: () => ({ count: 3 }), // simulamos que hay 3 productos en el carrito
+  useCart: () => ({ count: 3 }),
 }));
 
-// === MOCK: logo import ===
+// === MOCK logo ===
 vi.mock("../assets/img/logotopbarmimi.png", () => ({
   default: "logo-mock.png",
 }));
 
-// === MOCK: useNavigate ===
-// MOCK useNavigate
+// === MOCK useNavigate ===
 const mockNavigate = vi.fn();
 
 vi.mock("react-router-dom", async () => {
-  const actual = await vi.importActual<typeof import("react-router-dom")>("react-router-dom");
+  const actual = await vi.importActual<typeof import("react-router-dom")>(
+    "react-router-dom"
+  );
 
   return {
     ...actual,
@@ -26,14 +27,12 @@ vi.mock("react-router-dom", async () => {
   };
 });
 
-
-// Reset mocks
 beforeEach(() => {
   vi.resetAllMocks();
   localStorage.clear();
 });
 
-describe("Navbar", () => {
+describe("Navbar Component", () => {
 
   const renderNavbar = (initialPath = "/") => {
     return render(
@@ -55,13 +54,11 @@ describe("Navbar", () => {
   // ----------------------------------------------------
   it("muestra el contador del carrito cuando count > 0", () => {
     renderNavbar();
-
-    const badge = screen.getByText("3"); 
-    expect(badge).toBeInTheDocument();
+    expect(screen.getByText("3")).toBeInTheDocument();
   });
 
   // ----------------------------------------------------
-  it("redirige al login si no hay usuario en localStorage", () => {
+  it("redirige a /inicio si NO hay usuario en localStorage", () => {
     renderNavbar();
 
     const userButton = screen.getByTitle("Iniciar sesión");
@@ -71,10 +68,16 @@ describe("Navbar", () => {
   });
 
   // ----------------------------------------------------
-  it("redirige al perfil si el usuario normal está logueado", () => {
+  it("redirige a /perfil si hay usuario normal (rolId = 1)", () => {
     localStorage.setItem(
       "user",
-      JSON.stringify({ name: "Juan", email: "test@test.com", role: "USER" })
+      JSON.stringify({
+        idUser: 10,
+        nombre: "Juan",
+        apellido: "Tester",
+        correo: "test@test.com",
+        rolId: 1, // usuario normal
+      })
     );
 
     renderNavbar();
@@ -86,10 +89,16 @@ describe("Navbar", () => {
   });
 
   // ----------------------------------------------------
-  it("redirige al admin si el usuario tiene rol ADMIN", () => {
+  it("redirige a /admin si el usuario es ADMIN (rolId = 2)", () => {
     localStorage.setItem(
       "user",
-      JSON.stringify({ name: "Admin", email: "admin@test.com", role: "ADMIN" })
+      JSON.stringify({
+        idUser: 1,
+        nombre: "Admin",
+        apellido: "Root",
+        correo: "admin@test.com",
+        rolId: 2, // admin
+      })
     );
 
     renderNavbar();
@@ -101,7 +110,7 @@ describe("Navbar", () => {
   });
 
   // ----------------------------------------------------
-  it("navega al carrito al presionar el botón de carrito", () => {
+  it("navega a /carrito al presionar el botón del carrito", () => {
     renderNavbar();
 
     const cartButton = screen.getByTitle("Ver carrito");
