@@ -3,10 +3,14 @@ import { useCart } from "../hooks/useCart.ts";
 import logo from "../assets/img/logotopbarmimi.png";
 import { useEffect, useState } from "react";
 
-interface User {
-  name?: string;
-  email?: string;
+export interface User {
+  idUser: number;
+  nombre: string;
+  apellido: string;
+  correo: string;
+  rolId: number;
 }
+
 
 export default function Navbar() {
   const navigate = useNavigate();
@@ -21,12 +25,9 @@ export default function Navbar() {
 
     if (storedUser) {
       const userData = JSON.parse(storedUser);
-      setUser({
-        name: userData.name,
-        email: userData.email,
-      });
-
-      setIsAdmin(userData.role === "ADMIN");
+      setUser(userData);
+      setIsAdmin(userData.rolId === 2);
+      
     } else {
       setUser(null);
       setIsAdmin(false);

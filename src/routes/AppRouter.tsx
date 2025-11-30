@@ -12,6 +12,7 @@ import Registro from '../pages/Registro';
 import Admin from '../pages/Admin';
 import Perfil from '../pages/Perfil'
 import MisReservas from '../pages/MisReservas';
+import ReservaDetalle from '../pages/ReservaDetalle';
 
 
 
@@ -34,7 +35,8 @@ export default function AppRouter() {
           <Route path= "/inicio" element={<InicioSesion/>}/>
           <Route path="/registro" element= {<Registro/>}/>
           <Route path="/admin" element ={<Admin/>}/>
-          <Route path="/perfil" element={<Perfil />} />
+          <Route path="/perfil" element={<Perfil />}/>
+          <Route path="/reserva-detalle/:idReserva" element={<ReservaDetalle/>}/>
           <Route path='*' element= {<div>Pagina no disponible</div>}/>
         </Routes>
       </div>

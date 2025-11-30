@@ -43,12 +43,11 @@ export default function MisReservas() {
 
     try {
       const res = await cancelarReserva(idReserva);
-
-      if (!res.success) {
+      if (res.estado === "CANCELADA") {
         setError(res.message || "No se pudo cancelar la reserva");
         return;
       }
-
+      console.log("pasa por aqui")
       setMensaje("Reserva cancelada correctamente ✔");
       setReservas((prev) => prev.filter((r) => r.idReserva !== idReserva));
     } catch (err) {
@@ -77,6 +76,7 @@ export default function MisReservas() {
               <p><strong>Profesional:</strong> {r.trabajador}</p>
               <p><strong>Fecha:</strong> {r.fecha}</p>
               <p><strong>Hora:</strong> {r.hora}</p>
+              <p><strong>Estado:</strong> {r.estado}</p>
 
               <div className="d-flex gap-2 mt-2">
                 <button

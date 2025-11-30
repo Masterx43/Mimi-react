@@ -46,12 +46,28 @@ export async function cancelarReserva(idReserva: number) {
 }
 
 export async function getReservaById(idReserva: number) {
-  const res = await fetch(`http://localhost:8086/api/reservas/${idReserva}`);
+  const res = await fetch(`http://localhost:8086/api/reservas/${idReserva}`, {
+    method: "GET"
+  }); 
+  
 
   if (!res.ok) throw new Error("Reserva no encontrada");
 
   return res.json();
 }
+
+
+export async function getReservaDetalleById(idReserva: number) {
+  const res = await fetch(`http://localhost:8086/api/reservas/detalle/${idReserva}`,{
+    method: "GET"
+  });
+
+  if (!res.ok) throw new Error("Reserva no encontrada");
+
+  return res.json();
+}
+
+
 
 
 

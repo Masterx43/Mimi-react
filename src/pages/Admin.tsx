@@ -42,7 +42,8 @@ export default function AdminPanel() {
   }, []);
 
   const handleLogout = () => {
-    localStorage.removeItem("isAdmin");
+    localStorage.removeItem("user");
+    localStorage.removeItem("token")
     navigate("/inicio");
   };
 

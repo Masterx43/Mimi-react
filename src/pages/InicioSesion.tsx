@@ -19,11 +19,12 @@ export default function InicioSesion() {
         setError("Credenciales incorrectas");
         return;
       }
-
+      
       localStorage.setItem("token", res.token);
       localStorage.setItem("user", JSON.stringify(res.user));
 
-      navigate("/perfil");
+      console.log(res)
+      navigate("/");
 
     } catch (e) {
       console.error("Error en login: ",e);

@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { getReservaById } from "../api/reservaService";
+import { getReservaDetalleById } from "../api/reservaService";
 
-import type { Reserva } from "../interfaces/Reserva";
+import type { ReservaDetalle } from "../interfaces/Reserva";
 
 export default function ReservaDetalle() {
   const { idReserva } = useParams();
   const navigate = useNavigate();
 
-  const [reserva, setReserva] = useState<Reserva | null>(null);
+  const [reserva, setReserva] = useState<ReservaDetalle | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -21,7 +21,7 @@ export default function ReservaDetalle() {
 
     const fetchReserva = async () => {
       try {
-        const data = await getReservaById(Number(idReserva));
+        const data = await getReservaDetalleById(Number(idReserva));
         setReserva(data);
       } catch (err) {
         console.error("Error cargando reserva:", err);
@@ -45,26 +45,17 @@ export default function ReservaDetalle() {
 
           <h2 className="text-center mb-3">Detalle de tu Reserva</h2>
 
-          <p><strong>Servicio:</strong> {reserva.servicioNombre}</p>
-          <p><strong>Profesional:</strong> {reserva.trabajadorNombre}</p>
+          <p><strong>Servicio:</strong> {reserva.servicio}</p>
+          <p><strong>Profesional:</strong> {reserva.trabajador}</p>
           <p><strong>Fecha:</strong> {reserva.fecha}</p>
           <p><strong>Hora:</strong> {reserva.hora}</p>
+          <p><strong>Estado:</strong> {reserva.estado}</p>
 
           <hr />
-
-          <p><strong>Cliente:</strong> {reserva.clienteNombre}</p>
-          <p><strong>Email:</strong> {reserva.clienteEmail}</p>
 
           <div className="d-flex justify-content-center mt-4 gap-3">
             <button className="btn btn-outline-secondary" onClick={() => navigate(-1)}>
               Volver
-            </button>
-
-            <button
-              className="btn botonRosado"
-              onClick={() => navigate(`/editar-reserva/${reserva.idReserva}`)}
-            >
-              Editar
             </button>
           </div>
 

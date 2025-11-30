@@ -90,8 +90,13 @@ export default function Reserva() {
       setHorasDisponibles([]);
       return;
     }
+    const [yearStr, monthStr, dayStr] = fecha.split("-");
+    const year = Number(yearStr);
+    const month = Number(monthStr); // 1-12
+    const day = Number(dayStr);
 
-    const dia = new Date(fecha).getDay(); // 0 = DOMINGO
+    const dia = new Date(year, month - 1, day).getDay(); // 0 = DOMINGO
+
     setError("");
 
     if (dia === 0) {
@@ -105,7 +110,7 @@ export default function Reserva() {
       return;
     }
 
-    setHorasDisponibles(generarHoras(19)); // normal
+    setHorasDisponibles(generarHoras(19)); // lunes-viernes
   }, [fecha]);
 
   // ======================================================
@@ -135,7 +140,7 @@ export default function Reserva() {
         hora,
       };
 
-      console.log("⏳ Enviando reserva:", payload);
+      console.log("Enviando reserva:", payload);
 
       const res: ReservaResponse = await crearReserva(payload);
       console.log("pasa por aqui")
@@ -144,7 +149,7 @@ export default function Reserva() {
         return;
       }
 
-      setMensaje("¡Reserva creada correctamente! 🎉");
+      setMensaje("Reserva creada correctamente");
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : "Error desconocido";
       setError(msg);
@@ -171,6 +176,7 @@ export default function Reserva() {
               <select
                 className="form-select"
                 value={servicioSeleccionado}
+                data-testid="select-servicio"
                 onChange={(e) =>
                   setServicioSeleccionado(Number(e.target.value))
                 }
@@ -194,6 +200,7 @@ export default function Reserva() {
               <select
                 className="form-select"
                 value={trabajadorSeleccionado}
+                data-testid="select-trabajador"
                 onChange={(e) =>
                   setTrabajadorSeleccionado(Number(e.target.value))
                 }
@@ -211,11 +218,12 @@ export default function Reserva() {
             <div className="mb-3">
               <label className="form-label">Fecha</label>
               <input
-                type="date"
+                type={import.meta.env.MODE === "test" ? "text" : "date"}
                 className="form-control"
                 value={fecha}
+                data-testid="input-fecha"
                 onChange={(e) => setFecha(e.target.value)}
-                min={new Date().toISOString().split("T")[0]}
+                min={import.meta.env.MODE === "test" ? "" : new Date().toISOString().split("T")[0]}
               />
             </div>
 
@@ -225,6 +233,7 @@ export default function Reserva() {
               <select
                 className="form-select"
                 value={hora}
+                data-testid="select-hora"
                 onChange={(e) => setHora(e.target.value)}
                 disabled={!horasDisponibles.length}
               >

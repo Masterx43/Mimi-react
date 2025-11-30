@@ -64,7 +64,7 @@ export default function Registro() {
           {error && <div className="alert alert-danger text-center">{error}</div>}
           {mensaje && <div className="alert alert-success text-center">{mensaje}</div>}
 
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} data-testid="register-form">
             {/* Nombre */}
             <div className="mb-3">
               <label className="form-label">Nombre</label>
