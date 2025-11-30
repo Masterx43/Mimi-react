@@ -3,5 +3,15 @@ export interface Service {
   nombre: string;
   descripcion: string;
   precio: number;
-  imagenUrl: string;  // <-- nombre correcto
+  categoriaId: number;
+  imagenUrl: string;
+}
+
+
+export interface Service {
+  idServicio: number;
+  nombre: string;
+  descripcion: string;
+  precio: number;
+  imagenUrl: string;
 }

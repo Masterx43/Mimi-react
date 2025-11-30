@@ -271,4 +271,128 @@ footer i:hover {
 
 
 
+.modal-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+
+.modal-card {
+  background: #ffffff;
+  width: 90%;
+  max-width: 420px;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 6px 30px rgba(0,0,0,0.15);
+  animation: fadeIn 0.3s ease-out;
+}
+
+.modal-card h4 {
+  font-weight: 700;
+  color: #d63384;
+  margin-bottom: 1.2rem;
+  text-align: center;
+}
+
+.modal-label {
+  font-weight: 600;
+  color: #3b2e3c;
+  margin-bottom: 4px;
+  font-size: 0.95rem;
+}
+
+
+/* Centrado general del panel administrador */
+.admin-container {
+  width: 100%;
+  max-width: 1000px;
+  margin: auto;
+}
+
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+
+/* ======== MODAL MI MI ======== */
+
+.modal-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+
+.modal-card {
+  background: #ffffff;
+  width: 90%;
+  max-width: 420px;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 6px 30px rgba(0,0,0,0.15);
+  animation: fadeIn 0.3s ease-out;
+}
+
+.modal-card h4 {
+  font-weight: 700;
+  color: #d63384;
+  margin-bottom: 1.2rem;
+  text-align: center;
+}
+
+.modal-label {
+  font-weight: 600;
+  color: #3b2e3c;
+  margin-bottom: 4px;
+  font-size: 0.95rem;
+}
+
+.admin-container {
+  width: 100%;
+  max-width: 1000px;
+  margin: auto;
+}
+
+
+/* ---------------------------------------------------------- */
+/*  AQUI — EXACTAMENTE AQUI — DEBES PEGAR EL CÓDIGO           */
+/* ---------------------------------------------------------- */
+
+/* ===== Quitar flechas de inputs type="number" ===== */
+
+/* Chrome, Safari, Edge */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+/* ---------------------------------------------------------- */
+/* FIN - NO PEGUES MÁS ABAJO                                  */
+/* ---------------------------------------------------------- */
+
+
+
+
+
 

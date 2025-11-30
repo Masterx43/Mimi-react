@@ -9,6 +9,7 @@ export interface Product {
   descripcion: string;
   precio: number;
   imagen: string;
-  categoria?: Category;
-  categoriaId?: number;
+  categoria?: Category;   
+  categoriaId?: number;   
+
 }

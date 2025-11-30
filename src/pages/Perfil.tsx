@@ -2,14 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getUserProfile } from "../api/authService";
 
-interface User {
-  idUser: number;
-  nombre: string;
-  apellido: string;
-  correo: string;
-  phone?: string;
-  rolId: number;
-}
+import type { User } from "../interfaces/User";
 
 export default function Perfil() {
   const navigate = useNavigate();
@@ -18,9 +11,7 @@ export default function Perfil() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-
-  //Carga datos reales del microservicio
-
+  // CARGA DEL BACKEND
   useEffect(() => {
     const fetchUser = async () => {
       try {
@@ -30,7 +21,7 @@ export default function Perfil() {
           setError("Tu sesión expiró o el token no es válido");
           setUser(null);
         } else {
-          setUser(data); // USER DTO real
+          setUser(data);
         }
       } catch (err) {
         console.error("Error cargando perfil:", err);
@@ -43,18 +34,14 @@ export default function Perfil() {
     fetchUser();
   }, []);
 
-
-  // 2. Cerrar Sesión
-
+  // LOGOUT
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
-
     navigate("/inicio");
   };
 
-
-  // MIENTRAS CARGA
+  // LOADING
   if (loading) {
     return (
       <div className="home-fondo d-flex justify-content-center align-items-center" style={{ minHeight: "100vh" }}>
@@ -63,9 +50,7 @@ export default function Perfil() {
     );
   }
 
-
-  // SI HAY ERROR O NO HAY USUARIO
-
+  // ERROR
   if (!user || error) {
     return (
       <div className="home-fondo d-flex justify-content-center align-items-center" style={{ minHeight: "100vh" }}>
@@ -81,20 +66,20 @@ export default function Perfil() {
     );
   }
 
-
-  // PERFIL REAL OSEA QUE EXISTE
-
+  // PERFIL REAL
   return (
     <div className="home-fondo d-flex justify-content-center align-items-center" style={{ minHeight: "100vh" }}>
       <div
         className="card p-4 text-center shadow-lg border-0"
         style={{ backgroundColor: "white", borderRadius: "12px", maxWidth: "500px", width: "100%" }}
       >
-        <h2 className="mb-4">Tu Cuenta</h2>
+        <h2 className="mb-4">Tu Perfil</h2>
 
-        <p><strong>Nombre:</strong> {user.nombre} {user.apellido}</p>
+        <p><strong>Nombre completo:</strong> {user.nombre} {user.apellido}</p>
 
         <p><strong>Correo:</strong> {user.correo}</p>
+
+        <p><strong>Teléfono:</strong> {user.phone}</p>
 
         <p><strong>Rol:</strong>{" "}
           {user.rolId === 2 ? (
@@ -114,7 +99,6 @@ export default function Perfil() {
         >
           Ver mis reservas
         </button>
-
 
         <div className="d-flex justify-content-center mt-4">
           <button className="btn btn-danger" onClick={handleLogout}>
