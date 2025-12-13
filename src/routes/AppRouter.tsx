@@ -13,6 +13,7 @@ import Admin from '../pages/Admin';
 import Perfil from '../pages/Perfil'
 import MisReservas from '../pages/MisReservas';
 import ReservaDetalle from '../pages/ReservaDetalle';
+import ProtectedRoute from './ProtectedRoutes';
 
 
 
@@ -25,19 +26,61 @@ export default function AppRouter() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/tienda" element={<Tienda />} />
-          <Route path="/servicios" element={<Servicios />} /> 
-          <Route path="Servicio/:id" element={<ServicioDetalle/>}/>
+          <Route path="/servicios" element={<Servicios />} />
+          <Route path="Servicio/:id" element={<ServicioDetalle />} />
           <Route path="/servicio/:id" element={<ServicioDetalle />} />
-          <Route path="/carrito" element={<Carrito />} />
+          <Route
+            path="/carrito"
+            element={
+              <ProtectedRoute redirectTo="/inicio">
+                <Carrito />
+              </ProtectedRoute>
+            }
+          />
           <Route path="/producto/:id" element={<ProductoDetalle />} />
-          <Route path="/reserva" element= {<Reserva />}/>
-          <Route path="/mis-reservas" element={<MisReservas />} />
-          <Route path= "/inicio" element={<InicioSesion/>}/>
-          <Route path="/registro" element= {<Registro/>}/>
-          <Route path="/admin" element ={<Admin/>}/>
-          <Route path="/perfil" element={<Perfil />}/>
-          <Route path="/reserva-detalle/:idReserva" element={<ReservaDetalle/>}/>
-          <Route path='*' element= {<div>Pagina no disponible</div>}/>
+          <Route
+            path="/reserva"
+            element={
+              <ProtectedRoute redirectTo="/inicio">
+                <Reserva />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/mis-reservas"
+            element={
+              <ProtectedRoute redirectTo="/inicio">
+                <MisReservas />
+              </ProtectedRoute>
+            }
+          />
+          <Route path="/inicio" element={<InicioSesion />} />
+          <Route path="/registro" element={<Registro />} />
+          <Route
+            path="/admin"
+            element={
+              <ProtectedRoute allowedRoles={[2]} redirectTo="/inicio">
+                <Admin />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/perfil"
+            element={
+              <ProtectedRoute redirectTo="/inicio">
+                <Perfil />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/reserva-detalle/:idReserva"
+            element={
+              <ProtectedRoute redirectTo="/inicio">
+                <ReservaDetalle />
+              </ProtectedRoute>
+            }
+          />
+          <Route path='*' element={<div>Pagina no disponible</div>} />
         </Routes>
       </div>
     </BrowserRouter>
